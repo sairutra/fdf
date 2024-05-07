@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:09:32 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/07 14:56:39 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/07 18:29:36 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,19 @@
 # define FDF_H
 
 #include <mlx.h>
+
+typedef struct	s_data {
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}				t_data;
+
+typedef struct	s_vars {
+	void	*mlx;
+	void	*win;
+}				t_vars;
 
 //colors
 
@@ -100,4 +113,26 @@ int add_shade(double distance, int color);
 //[Error]
 // No error value
 int rev_color(int trgb);
+
+//events
+
+//[Description]
+//This function initialize the hooks that will be used
+//for the program.
+//[Parameters]
+//t_vars *vars
+//This paramater needs to be initialized with a mlx instance, 
+// and a window in order for the hooks to be initiliazed.
+//[Return]
+//Function returns nothing
+// values
+//[Error]
+// No error value
+void hooks(t_vars *vars);
+
+//render
+
+void	pixel_put(t_data *data, int x, int y, int color);
+
+
 #endif

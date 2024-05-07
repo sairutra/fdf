@@ -1,23 +1,6 @@
 #include "../inc/fdf.h"
 #include <stdio.h>
 
-
-typedef struct	s_data {
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-}				t_data;
-
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
-{
-	char	*dst;
-
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
-}
-
 void draw_rows(t_data *img, int width, int height, int trgb)
 {
 	int windex;
@@ -32,7 +15,7 @@ void draw_rows(t_data *img, int width, int height, int trgb)
 			while (windex <= width)
 			{
 				if ((height - hindex) >= 0)
-					my_mlx_pixel_put(img, windex, height - hindex, trgb);
+					pixel_put(img, windex, height - hindex, trgb);
 				windex++;
 			}
 			windex = 0;
@@ -57,7 +40,7 @@ void draw_columns(t_data *img, int width, int height, int trgb)
 			while (hindex <= height)
 			{
 				if ((width - windex) >= 0)
-					my_mlx_pixel_put(img, width - windex, hindex, trgb);
+					pixel_put(img, width - windex, hindex, trgb);
 				hindex++;
 			}
 			hindex = 0;
@@ -78,20 +61,20 @@ int	main(void)
 {	
 	int		width;
 	int		height;
-	void	*mlx;
-	void	*mlx_win;
 	int 	color;
 	t_data	img;
+	t_vars	vars;
 
 	color = create_trgb(200, 100, 0, 0);
 	width = 1920;
 	height = 1080;
-	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, width, height, "Hello world!");
-	img.img = mlx_new_image(mlx, width, height);
+	vars.mlx = mlx_init();
+	vars.win = mlx_new_window(vars.mlx, 1920, 1080, "Hello world!");
+	img.img = mlx_new_image(vars.mlx, width, height);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
 								&img.endian);
 	draw_squares(&img, width, height, rev_color(color));
-	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
-	mlx_loop(mlx);
+	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
+	hooks(&vars);
+	mlx_loop(vars.mlx);
 }
