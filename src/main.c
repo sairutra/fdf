@@ -83,7 +83,7 @@ int	main(void)
 	int 	color;
 	t_data	img;
 
-	color = create_trgb(200, 255, 200, 100);
+	color = create_trgb(200, 100, 0, 0);
 	width = 1920;
 	height = 1080;
 	mlx = mlx_init();
@@ -91,7 +91,7 @@ int	main(void)
 	img.img = mlx_new_image(mlx, width, height);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
 								&img.endian);
-	draw_squares(&img, width, height, add_shade(0.5, color));
+	draw_squares(&img, width, height, rev_color(color));
 	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
 	mlx_loop(mlx);
 }
