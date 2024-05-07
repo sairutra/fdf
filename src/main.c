@@ -1,5 +1,6 @@
-#include <mlx.h>
+#include "../inc/fdf.h"
 #include <stdio.h>
+
 
 typedef struct	s_data {
 	void	*img;
@@ -17,7 +18,7 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void draw_rows(t_data *img, int width, int height)
+void draw_rows(t_data *img, int width, int height, int trgb)
 {
 	int windex;
 	int hindex;
@@ -31,7 +32,7 @@ void draw_rows(t_data *img, int width, int height)
 			while (windex <= width)
 			{
 				if ((height - hindex) >= 0)
-					my_mlx_pixel_put(img, windex, height - hindex, 0x00FF0000);
+					my_mlx_pixel_put(img, windex, height - hindex, trgb);
 				windex++;
 			}
 			windex = 0;
@@ -42,7 +43,7 @@ void draw_rows(t_data *img, int width, int height)
 	}
 }
 
-void draw_columns(t_data *img, int width, int height)
+void draw_columns(t_data *img, int width, int height, int trgb)
 {
 	int windex;
 	int hindex;
@@ -56,10 +57,7 @@ void draw_columns(t_data *img, int width, int height)
 			while (hindex <= height)
 			{
 				if ((width - windex) >= 0)
-				{
-					my_mlx_pixel_put(img, width - windex, hindex, 0x00FF0000);
-					// printf("width - windex: %d\n", width - windex);
-				}
+					my_mlx_pixel_put(img, width - windex, hindex, trgb);
 				hindex++;
 			}
 			hindex = 0;
@@ -70,10 +68,10 @@ void draw_columns(t_data *img, int width, int height)
 	}
 }
 
-void draw_squares(t_data *img, int width, int height)
+void draw_squares(t_data *img, int width, int height, int trgb)
 {
-	draw_rows(img, width, height);
-	draw_columns(img, width, height);
+	draw_rows(img, width, height, trgb);
+	draw_columns(img, width, height, trgb);
 }
 
 int	main(void)
@@ -82,8 +80,10 @@ int	main(void)
 	int		height;
 	void	*mlx;
 	void	*mlx_win;
+	int 	color;
 	t_data	img;
 
+	color = create_trgb(200, 255, 200, 100);
 	width = 1920;
 	height = 1080;
 	mlx = mlx_init();
@@ -91,7 +91,7 @@ int	main(void)
 	img.img = mlx_new_image(mlx, width, height);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
 								&img.endian);
-	draw_squares(&img, width, height);
+	draw_squares(&img, width, height, add_shade(0.5, color));
 	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
 	mlx_loop(mlx);
 }
