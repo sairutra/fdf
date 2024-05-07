@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:09:32 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/07 18:33:48 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/07 18:36:28 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int rev_color(int trgb);
 //for the program.
 //[Parameters]
 //t_vars *vars
-//This paramater needs to be initialized with a mlx instance, 
+//This parameter needs to be initialized with a mlx instance, 
 // and a window in order for the hooks to be initiliazed.
 //[Return]
 //Function returns nothing
