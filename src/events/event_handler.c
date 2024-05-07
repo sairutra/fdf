@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 18:22:50 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/07 18:27:43 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/07 18:32:29 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int	destroy(t_vars *vars)
 	mlx_destroy_window(vars->mlx, vars->win);
 	return (0);
 }
-
 
 void hooks(t_vars *vars)
 {

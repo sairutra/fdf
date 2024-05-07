@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:09:32 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/07 18:29:36 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/07 18:33:48 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,19 @@ void hooks(t_vars *vars);
 
 //render
 
+//[Description]
+//This function put the right values at the memory location of 
+// the pixels of a window.
+//[Parameters]
+//t_data *data
+//int x (width)
+//int y (height)
+//int color (trgb)
+//[Return]
+//Function returns nothing
+// values
+//[Error]
+// No error value
 void	pixel_put(t_data *data, int x, int y, int color);
 
 
