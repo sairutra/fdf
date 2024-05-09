@@ -57,7 +57,12 @@ void draw_squares(t_data *img, int width, int height, int trgb)
 	draw_columns(img, width, height, trgb);
 }
 
-int	main(void)
+void parse(char **argv)
+{
+	ft_printf("%s\n", argv[1]);
+}
+
+int	main(int argc, char **argv)
 {	
 	int		width;
 	int		height;
@@ -65,6 +70,9 @@ int	main(void)
 	t_data	img;
 	t_vars	vars;
 
+	if (argc == 2)
+		parse(argv);
+	
 	color = create_trgb(200, 100, 0, 0);
 	width = 1920;
 	height = 1080;
