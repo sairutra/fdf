@@ -57,6 +57,27 @@ void draw_squares(t_data *img, int width, int height, int trgb)
 	draw_columns(img, width, height, trgb);
 }
 
+int parse_rows(char *path)
+{
+	int		count;
+	int		fd;
+	char	*buf;
+
+	count = 1;
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
+		return (-1);
+	buf = get_next_line(fd);
+	while (buf != NULL)
+	{
+		count++;
+		free(buf);
+		buf = get_next_line(fd);
+	}
+	close(fd);
+	free(buf);
+	return (count - 1);
+}
 
 int parse_colom(char *path)
 {
@@ -70,23 +91,31 @@ int parse_colom(char *path)
 	if (fd == -1)
 		return (-1);
 	buf = get_next_line(fd);
+	close(fd);
 	if (buf == NULL)
 		return (-1);
 	splitbuf = ft_split(buf, ' ');
 	free(buf);
 	while (splitbuf[count] != NULL)
-		count++;
-	free_char_array(splitbuf);
-	return (count - 1);
+	{
+		if (ft_strncmp(splitbuf[count], " ", 1))
+			count++;
+	}
+	if(ft_strncmp(splitbuf[count - 1], "\n", 1))
+		count--;
+	return (count);
 }
 
 void parse(char **argv)
 {
 	char	*path;
 	int		columns;
+	int		rows;
 
 	path = argv[1];
 	columns = parse_colom(path);
+	rows = parse_rows(path);
+	ft_printf("columns: %d rows: %d", columns, rows);
 }
 
 //look at perror and strerror
