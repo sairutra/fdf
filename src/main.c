@@ -57,10 +57,39 @@ void draw_squares(t_data *img, int width, int height, int trgb)
 	draw_columns(img, width, height, trgb);
 }
 
+
+int parse_colom(char *path)
+{
+	int		count;
+	int		fd;
+	char	*buf;
+	char	**splitbuf;
+
+	count = 0;
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
+		return (-1);
+	buf = get_next_line(fd);
+	if (buf == NULL)
+		return (-1);
+	splitbuf = ft_split(buf, ' ');
+	free(buf);
+	while (splitbuf[count] != NULL)
+		count++;
+	free_char_array(splitbuf);
+	return (count - 1);
+}
+
 void parse(char **argv)
 {
-	ft_printf("%s\n", argv[1]);
+	char	*path;
+	int		columns;
+
+	path = argv[1];
+	columns = parse_colom(path);
 }
+
+//look at perror and strerror
 
 int	main(int argc, char **argv)
 {	

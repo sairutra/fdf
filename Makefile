@@ -7,7 +7,7 @@ TARGET      := fdf
 #The Directories, Source, Includes, Objects, Binary and Resources
 SRCDIR      := src
 INCDIR      := inc
-BUILDDIR    := obj
+BUILDDIR    := build/obj
 TARGETDIR   := build/bin
 RESDIR      := res
 SRCEXT      := c

@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:09:32 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/09 16:31:52 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/09 17:04:22 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 #include <mlx.h>
 #include "../lib/libft/inc/libft.h"
+#include <unistd.h>
+#include <fcntl.h>
 
 typedef struct	s_data {
 	void	*img;
