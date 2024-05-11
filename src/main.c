@@ -98,10 +98,11 @@ int parse_colom(char *path)
 	free(buf);
 	while (splitbuf[count] != NULL)
 	{
+		ft_printf("splitbuf[count] %s\n", splitbuf[count]);
 		if (ft_strncmp(splitbuf[count], " ", 1))
 			count++;
 	}
-	if(ft_strncmp(splitbuf[count - 1], "\n", 1))
+	if(!ft_strncmp(splitbuf[count - 1], "\n", 1))
 		count--;
 	return (count);
 }
