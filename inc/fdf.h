@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:09:32 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/09 17:04:22 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/11 18:25:16 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,26 @@ typedef struct	s_data {
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
+	int		width;
+	int		height;
+	int		rows;
+	int		columns;
+	int		*map;
+	int		*map_color;
 }				t_data;
 
 typedef struct	s_vars {
 	void	*mlx;
 	void	*win;
 }				t_vars;
+
+#ifndef WIDTH
+# define WIDTH 1920
+#endif
+
+#ifndef HEIGHT
+# define HEIGHT 1080
+#endif
 
 //colors
 
