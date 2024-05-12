@@ -75,16 +75,12 @@ void data_init(t_data *data)
 		mlx_destroy_window(data->mlx, data->win);
 		mlx_destroy_display(data->mlx);
 		free(data->mlx);
+		exit(EXIT_FAILURE);
 	}
 	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel, &data->line_length,
 								&data->endian);
 	if(data->addr == NULL)
-	{
-		mlx_destroy_image(data->mlx, data->img);
-		mlx_destroy_window(data->mlx, data->win);
-		mlx_destroy_display(data->mlx);
-		free(data->mlx);
-	}
+		free_all(data);
 	data->width = WIDTH;
 	data->height = HEIGHT;
 }
