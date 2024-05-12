@@ -81,6 +81,7 @@ void data_init(t_data *data)
 								&data->endian);
 	if(data->addr == NULL)
 		free_all(data);
+	// map_init(img);
 	data->width = WIDTH;
 	data->height = HEIGHT;
 }
