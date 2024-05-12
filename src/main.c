@@ -57,43 +57,51 @@ void draw_squares(t_data *img, int width, int height, int trgb)
 	draw_columns(img, width, height, trgb);
 }
 
-void vars_init(t_vars *vars)
+void data_init(t_data *data)
 {
-	vars->mlx = mlx_init();
-	if (vars->mlx == NULL)
+	data->mlx = mlx_init();
+	if (data->mlx == NULL)
 		exit(EXIT_FAILURE);
-	vars->win = mlx_new_window(vars->mlx, WIDTH, HEIGHT, "fdf");
-	if (vars->win == NULL)
+	data->win = mlx_new_window(data->mlx, WIDTH, HEIGHT, "fdf");
+	if (data->win == NULL)
 	{
-		free(vars->mlx);
+		mlx_destroy_display(data->mlx);
+		free(data->mlx);
 		exit(EXIT_FAILURE);
 	}
-}
-
-void img_init(t_data *img, t_vars *vars)
-{
-	img->img = mlx_new_image(vars->mlx, WIDTH, HEIGHT);
-	img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel, &img->line_length,
-								&img->endian);
-	img->width = WIDTH;
-	img->height = HEIGHT;
+	data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
+	if (data->img == NULL)
+	{
+		mlx_destroy_window(data->mlx, data->win);
+		mlx_destroy_display(data->mlx);
+		free(data->mlx);
+	}
+	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel, &data->line_length,
+								&data->endian);
+	if(data->addr == NULL)
+	{
+		mlx_destroy_image(data->mlx, data->img);
+		mlx_destroy_window(data->mlx, data->win);
+		mlx_destroy_display(data->mlx);
+		free(data->mlx);
+	}
+	data->width = WIDTH;
+	data->height = HEIGHT;
 }
 
 int	main(int argc, char **argv)
 {	
 	int 	color;
-	t_data	img;
-	t_vars	vars;
+	t_data	data;
 
 	if (argc == 2)
-		parse(argv, &img);
+		parse(argv, &data);
 	else
 		return(EXIT_FAILURE);
 	color = create_trgb(200, 100, 0, 0);
-	vars_init(&vars);
-	img_init(&img, &vars);
-	draw_squares(&img, img.width, img.height, rev_color(color));
-	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
-	hooks(&vars);
-	mlx_loop(vars.mlx);
+	data_init(&data);
+	draw_squares(&data, data.width, data.height, rev_color(color));
+	mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
+	hooks(&data);
+	mlx_loop(data.mlx);
 }

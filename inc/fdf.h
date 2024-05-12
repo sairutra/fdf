@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:09:32 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/12 15:21:46 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/12 15:30:28 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ typedef struct	s_data {
 	int		columns;
 	int		*map;
 	int		*map_color;
+	void	*mlx;
+	void	*win;
 }				t_data;
 
 typedef struct	s_vars {
@@ -145,7 +147,7 @@ int rev_color(int trgb);
 // values
 //[Error]
 // No error value
-void hooks(t_vars *vars);
+void hooks(t_data *data);
 
 //render
 
