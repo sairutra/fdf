@@ -97,7 +97,7 @@ int parse_rows_check_coordinate_color_rgb(char *buf)
 	hex_b[0] = buf[6];
 	hex_b[1] = buf[7];
 	hex_b[2] = 0;
-	ft_printf("buf[0]: %c buf[1]: %c\n", buf[0], buf[1]);
+	ft_printf("buf %s, buf[0]: %c buf[1]: %c\n", buf, buf[0], buf[1]);
 	if(buf[0] != '0' || buf[1] != 'x')
 		return (EXIT_FAILURE);
 	hex = hstoi(hex_r);
@@ -152,21 +152,41 @@ int parse_rows_check_coordinate_color_r(char *buf)
 	return (EXIT_SUCCESS);
 }
 
-int parse_rows_check_coordinate_color(char *buf)
+int parse_rows_check_coordinate_value(char *buf)
+{
+	int	len;
+	int index;
+
+	index = 0;
+	len = ft_strlen(buf);
+	if (buf[len - 1] == '\n')
+		len--;
+	while (index < len)
+	{
+		if (!ft_isdigit(buf[index]))
+			return (EXIT_FAILURE); 
+		index++;
+	}
+	return (EXIT_SUCCESS);
+}
+
+int parse_rows_check_coordinate_color(char *buf_value, char *buf_color)
 {
 	int len;
 	int unvalid;
 
 	unvalid = 0;
-	len = ft_strlen(buf); 
+	len = ft_strlen(buf_color); 
+	ft_printf("len %d\n", len);
 	if(len == 4)
-		unvalid = parse_rows_check_coordinate_color_r(buf);
+		unvalid = parse_rows_check_coordinate_color_r(buf_color);
 	else if (len == 6)
-		unvalid = parse_rows_check_coordinate_color_rg(buf);
+		unvalid = parse_rows_check_coordinate_color_rg(buf_color);
 	else if (len == 8)
-		unvalid = parse_rows_check_coordinate_color_rgb(buf);
+		unvalid = parse_rows_check_coordinate_color_rgb(buf_color);
 	else
 		return(EXIT_FAILURE);
+	unvalid = parse_rows_check_coordinate_value(buf_value);
 	return(unvalid);
 }
 
@@ -177,6 +197,7 @@ int parse_rows_check_coordinate(char *buf)
 
 	unvalid = 0;
 	splitbuf = ft_split(buf, ',');
+	ft_printf("buf %s, atoi %d\n", buf, ft_atoi(splitbuf[0]));
 	if (splitbuf == NULL)
 		return (EXIT_FAILURE);
 	if (ft_atoi(splitbuf[0]))
@@ -185,11 +206,12 @@ int parse_rows_check_coordinate(char *buf)
 		unvalid = 0;
 	else
 		unvalid = 1;
+	if (buf[ft_strlen(buf) - 1] == ',')
+		unvalid = 1;
+	if (splitbuf[1] == NULL)
+		unvalid = parse_rows_check_coordinate_value(splitbuf[0]);
 	if (splitbuf[1] != NULL)
-	{	
-		if (parse_rows_check_coordinate_color(splitbuf[1]))
-			unvalid = 1;
-	}
+			unvalid = parse_rows_check_coordinate_color(splitbuf[0], splitbuf[1]);
 	free_char_array(splitbuf);
 	return (unvalid);
 }
@@ -247,6 +269,7 @@ int parse_rows(char *path, int columns)
 	}
 	if (parse_rows_check(buf, columns))
 	{
+		free(buf);
 		close(fd);
 		return (-1);
 	}
@@ -259,6 +282,7 @@ int parse_rows(char *path, int columns)
 			break;
 		if (parse_rows_check(buf, columns))
 		{
+			free(buf);
 			close(fd);
 			return (-1);
 		}
@@ -283,9 +307,9 @@ int parse_colom(char *path)
 	if (buf == NULL)
 		return (-1);
 	splitbuf = ft_split(buf, ' ');
+	free(buf);
 	if (splitbuf == NULL)
 		return (-1);
-	free(buf);
 	while (splitbuf[count] != NULL)
 	{
 		if (ft_strncmp(splitbuf[count], " ", 1))
@@ -319,12 +343,15 @@ void parse(char **argv, t_data* img)
 	path = argv[1];
 	img->columns = parse_colom(path);
 	img->rows = parse_rows(path, img->columns);
-	// if (img->columns == -1 || img->rows == -1)
-	// 	exit(EXIT_FAILURE);
+	if (img->columns == -1 || img->rows == -1)
+	{
+		get_next_line(0, 2);
+		ft_printf("columns: %d rows: %d\n", img->columns, img->rows);
+		exit(EXIT_FAILURE);
+	}
 	// map_init(img);
 	// if (img->map == NULL || img->map_color == NULL)
 	// 	exit(EXIT_FAILURE);
-	ft_printf("columns: %d rows: %d", img->columns, img->rows);
 }
 
 //look at perror and strerror
@@ -353,7 +380,8 @@ int	main(int argc, char **argv)
 
 	if (argc == 2)
 		parse(argv, &img);
-	
+	else
+		return(EXIT_FAILURE);
 	color = create_trgb(200, 100, 0, 0);
 	vars_init(&vars);
 	img_init(&img, &vars);
