@@ -6,13 +6,13 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 13:23:31 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/07 14:06:13 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/12 17:37:04 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/fdf.h"
 
-int	create_trgb(int t, int r, int g, int b)
+int	trgb(int t, int r, int g, int b)
 {
 	if(t < 0 || t > 256)
 		return (-1);

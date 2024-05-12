@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 18:22:50 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/12 15:45:46 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/12 17:50:46 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	keypress(int keycode, t_data *data)
 {
 	if (keycode == 65307)
 	{
-		free_all(data);
+		free_all_mlx(data);
 		exit(EXIT_SUCCESS);
 	}
 	return (0);
@@ -24,7 +24,7 @@ int	keypress(int keycode, t_data *data)
 
 int	destroy(t_data *data)
 {
-	free_all(data);
+	free_all_mlx(data);
 	exit(EXIT_SUCCESS);
 	return (0);
 }

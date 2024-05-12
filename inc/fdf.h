@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:09:32 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/12 15:57:32 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/12 17:50:15 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ typedef struct	s_data {
 	int		height;
 	int		rows;
 	int		columns;
-	int		*map;
-	int		*map_color;
+	int		**map;
+	char	*map_path;
+	int		**map_color;
 	void	*mlx;
 	void	*win;
 }				t_data;
@@ -64,11 +65,11 @@ typedef struct	s_vars {
 //[Error]
 //if one of the parameter is not 0 <= parameter < 256
 // then function returns -1
-int	create_trgb(int t, int r, int g, int b);
+int	trgb(int t, int r, int g, int b);
 //[Description]
 //This function extracts the t(ransparency) value from an trgb
 //integer. Make sure to use trgb integer, which can be created with
-// the create_trgb function. 
+// the trgb function. 
 //[Parameters]
 //int trgb
 //[Return]
@@ -191,7 +192,7 @@ void data_init(t_data *data);
 //Function returns nothing
 //[Error]
 // No error value
-void	free_all(t_data *data);
+void	free_all_mlx(t_data *data);
 
 //parse
 

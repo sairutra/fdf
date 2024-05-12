@@ -57,35 +57,6 @@ void draw_squares(t_data *img, int width, int height, int trgb)
 	draw_columns(img, width, height, trgb);
 }
 
-void data_init(t_data *data)
-{
-	data->mlx = mlx_init();
-	if (data->mlx == NULL)
-		exit(EXIT_FAILURE);
-	data->win = mlx_new_window(data->mlx, WIDTH, HEIGHT, "fdf");
-	if (data->win == NULL)
-	{
-		mlx_destroy_display(data->mlx);
-		free(data->mlx);
-		exit(EXIT_FAILURE);
-	}
-	data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
-	if (data->img == NULL)
-	{
-		mlx_destroy_window(data->mlx, data->win);
-		mlx_destroy_display(data->mlx);
-		free(data->mlx);
-		exit(EXIT_FAILURE);
-	}
-	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel, &data->line_length,
-								&data->endian);
-	if(data->addr == NULL)
-		free_all(data);
-	// map_init(img);
-	data->width = WIDTH;
-	data->height = HEIGHT;
-}
-
 int	main(int argc, char **argv)
 {	
 	int 	color;
@@ -95,7 +66,7 @@ int	main(int argc, char **argv)
 		parse(argv, &data);
 	else
 		return(EXIT_FAILURE);
-	color = create_trgb(200, 100, 0, 0);
+	color = trgb(200, 100, 0, 0);
 	data_init(&data);
 	draw_squares(&data, data.width, data.height, rev_color(color));
 	mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
