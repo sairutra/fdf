@@ -163,6 +163,7 @@ int parse_rows_check_coordinate_value(char *buf)
 		len--;
 	if(buf[0] == '-')
 			index++;
+	ft_printf("index %d len %d\n", index, len);
 	while (index < len)
 	{
 		if (!ft_isdigit(buf[index]))
@@ -179,6 +180,7 @@ int parse_rows_check_coordinate_color(char *buf, char *buf_value, char *buf_colo
 
 	unvalid = 0;
 	len = ft_strlen(buf_color); 
+	ft_printf("len %d\n", len);
 	if(len == 4)
 		unvalid = parse_rows_check_coordinate_color_r(buf_color);
 	else if (len == 6)
@@ -221,7 +223,10 @@ int parse_rows_check_coordinate(char *buf)
 	int		unvalid;
 
 	unvalid = 0;
+	if(!ft_isdigit(buf[0]) && buf[0] != '-')
+		return (EXIT_FAILURE);
 	splitbuf = ft_split(buf, ',');
+	ft_printf("buf %s, atoi %d\n", buf, ft_atoi(splitbuf[0]));
 	if (splitbuf == NULL)
 		return (EXIT_FAILURE);
 	if (!parse_rows_check_coordinate_atoitoa(splitbuf[0]))
