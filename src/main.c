@@ -161,6 +161,8 @@ int parse_rows_check_coordinate_value(char *buf)
 	len = ft_strlen(buf);
 	if (buf[len - 1] == '\n')
 		len--;
+	if(buf[0] == '-')
+			index++;
 	while (index < len)
 	{
 		if (!ft_isdigit(buf[index]))
@@ -177,7 +179,6 @@ int parse_rows_check_coordinate_color(char *buf, char *buf_value, char *buf_colo
 
 	unvalid = 0;
 	len = ft_strlen(buf_color); 
-	ft_printf("len %d\n", len);
 	if(len == 4)
 		unvalid = parse_rows_check_coordinate_color_r(buf_color);
 	else if (len == 6)
@@ -192,6 +193,28 @@ int parse_rows_check_coordinate_color(char *buf, char *buf_value, char *buf_colo
 	return(unvalid);
 }
 
+int parse_rows_check_coordinate_atoitoa(char *buf)
+{
+	int		cmp_int;
+	char	*cmp_str;
+	int		len;
+	
+	len = ft_strlen(buf);
+	if (buf[len - 1] == '\n')
+		len --;
+	cmp_int = ft_atoi(buf);
+	cmp_str = ft_itoa(cmp_int);
+	if (cmp_str == NULL)
+		return(EXIT_FAILURE);
+	if (ft_strncmp(buf, cmp_str, len))
+	{
+		free(cmp_str);
+		return(EXIT_FAILURE);
+	}
+	free(cmp_str);
+	return(EXIT_SUCCESS);
+}
+
 int parse_rows_check_coordinate(char *buf)
 {
 	char	**splitbuf;
@@ -199,15 +222,17 @@ int parse_rows_check_coordinate(char *buf)
 
 	unvalid = 0;
 	splitbuf = ft_split(buf, ',');
-	ft_printf("buf %s, atoi %d\n", buf, ft_atoi(splitbuf[0]));
 	if (splitbuf == NULL)
 		return (EXIT_FAILURE);
-	if (ft_atoi(splitbuf[0]))
+	if (!parse_rows_check_coordinate_atoitoa(splitbuf[0]))
 		unvalid = 0;
 	else if (!ft_strncmp(splitbuf[0], "0", 1))
 		unvalid = 0;
 	else
-		unvalid = 1;
+	{
+		free_char_array(splitbuf);
+		return(EXIT_FAILURE);
+	}
 	if (buf[ft_strlen(buf) - 1] == ',')
 		unvalid = 1;
 	if (splitbuf[1] == NULL)
