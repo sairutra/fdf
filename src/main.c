@@ -187,7 +187,7 @@ int parse_rows_check_coordinate_color(char *buf, char *buf_value, char *buf_colo
 	else
 		return(EXIT_FAILURE);
 	unvalid = parse_rows_check_coordinate_value(buf_value);
-	if (ft_strlen(buf) != ft_strlen(buf_value) + ft_strlen(buf_color))
+	if ((ft_strlen(buf) - 1) != ft_strlen(buf_value) + ft_strlen(buf_color))
 		return(EXIT_FAILURE);
 	return(unvalid);
 }
