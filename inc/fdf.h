@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:09:32 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/12 15:30:28 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/12 15:45:09 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,17 @@ void hooks(t_data *data);
 // No error value
 void	pixel_put(t_data *data, int x, int y, int color);
 
+//free_all
+//[Description]
+//This function free's all the data related to mlx and the 
+// fdf program
+//[Parameters]
+//t_data *data
+//[Return]
+//Function returns nothing
+//[Error]
+// No error value
+void	free_all(t_data *data);
 
 //parse
 
