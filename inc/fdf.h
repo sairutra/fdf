@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:09:32 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/11 18:25:16 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/12 15:21:46 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,4 +165,71 @@ void hooks(t_vars *vars);
 void	pixel_put(t_data *data, int x, int y, int color);
 
 
+//parse
+
+//[Description]
+//This function parse the map and checks if the map is valid 
+// for the program to run.
+//[Parameters]
+//char **argv
+//t_data *data
+//[Return]
+//Function returns nothing
+// values
+//[Error]
+// No error value
+void parse(char **argv, t_data* img);
+//[Description]
+//This function parses the first line of the map, to get
+// the count of columns in the map
+//[Parameters]
+//char *path (to map)
+//[Return]
+//the count of coloms or an error value
+// values
+//[Error]
+// -1 
+int parse_colom(char *path);
+//[Description]
+//This function parses all the rows in the map, 
+// and checks if the all coordinates are valid
+//[Parameters]
+//char *path (to map)
+//int	colomns (count)
+//[Return]
+//the number of rows or an error value
+//[Error]
+// -1 
+int parse_rows(char *path, int columns);
+//[Description]
+//This function checks a specific coordinate in the form
+// of a char *, and returns if it is valid or not. It can accept 
+// coordinates with color or without
+//[Parameters]
+//char *buf
+//Function returns 0 if coordinate is valid, otherwise
+// it returns the error value
+//[Error]
+// 1
+int parse_rows_check_coordinate(char *buf);
+//[Description]
+//This function checks a specific coordinate's value in the form
+// of a char *, and returns if it is valid or not.
+//[Parameters]
+//char *buf
+//Function returns 0 if coordinate is valid, otherwise
+// it returns the error value
+//[Error]
+// 1
+int parse_rows_check_coordinate_value(char *buf);
+//[Description]
+//This function checks a specific coordinate's color, if it is present, 
+//in the form of a char *, and returns if it is valid or not.
+//[Parameters]
+//char *buf
+//Function returns 0 if coordinate is valid, otherwise
+// it returns the error value
+//[Error]
+// 1
+int parse_rows_check_coordinate_color(char *buf, char *bv, char *bc);
 #endif
