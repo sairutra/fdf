@@ -170,7 +170,7 @@ int parse_rows_check_coordinate_value(char *buf)
 	return (EXIT_SUCCESS);
 }
 
-int parse_rows_check_coordinate_color(char *buf_value, char *buf_color)
+int parse_rows_check_coordinate_color(char *buf, char *buf_value, char *buf_color)
 {
 	int len;
 	int unvalid;
@@ -187,6 +187,8 @@ int parse_rows_check_coordinate_color(char *buf_value, char *buf_color)
 	else
 		return(EXIT_FAILURE);
 	unvalid = parse_rows_check_coordinate_value(buf_value);
+	if (ft_strlen(buf) != ft_strlen(buf_value) + ft_strlen(buf_color))
+		return(EXIT_FAILURE);
 	return(unvalid);
 }
 
@@ -211,7 +213,7 @@ int parse_rows_check_coordinate(char *buf)
 	if (splitbuf[1] == NULL)
 		unvalid = parse_rows_check_coordinate_value(splitbuf[0]);
 	if (splitbuf[1] != NULL)
-			unvalid = parse_rows_check_coordinate_color(splitbuf[0], splitbuf[1]);
+			unvalid = parse_rows_check_coordinate_color(buf, splitbuf[0], splitbuf[1]);
 	free_char_array(splitbuf);
 	return (unvalid);
 }
