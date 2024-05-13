@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mynodeus <mynodeus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 15:49:54 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/12 18:08:22 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/13 22:33:23 by mynodeus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void map_init_coordinates_values_vc_clr(t_data *data, char **b, int r, int c)
 	int clr;
 	int len;
 
+	clr = trgb(255, 255, 255, 255);
 	len = ft_strlen(b[1]);
 	if(len == 4)
 		clr = trgb(0, nhti(&b[1][2], 1), 0, 0);
@@ -60,14 +61,17 @@ void map_init_coordinates_values_vc_dft(t_data *data, char *buf, int r, int c)
 
 int map_init_coordinates_values_vc(t_data *data, char *buf, int r, int c)
 {
-	char **splitbuf;
-
+	char	**splitbuf;
+	int		index;
+	index = 0;
 	splitbuf = ft_split(buf, ',');
 	if (splitbuf == NULL)
 		return (EXIT_FAILURE);
-	if (splitbuf[1] == NULL)
+	while(splitbuf[index])
+		index++;
+	if (index == 1)
 		map_init_coordinates_values_vc_dft(data, splitbuf[0], r, c);
-	else if (splitbuf[1] != NULL)
+	else if (index == 2)
 		map_init_coordinates_values_vc_clr(data, splitbuf, r, c);
 	free_char_array(splitbuf);
 	return (EXIT_SUCCESS);
@@ -89,6 +93,7 @@ int map_init_coordinates_values(t_data *data, char *buf, int row)
 			free_char_array(splitbuf);
 			return(EXIT_FAILURE);
 		}
+		col++;
 	}
 	free_char_array(splitbuf);
 	return (EXIT_SUCCESS);
@@ -108,7 +113,7 @@ void map_init_coordinates(t_data *data)
 	}
 	while (index < data->rows)
 	{
-		buf = get_next_line(fd, 1);
+		buf = get_next_line(fd, 0);
 		if (buf == NULL)
 		{
 			free_all_mlx(data);
@@ -121,12 +126,16 @@ void map_init_coordinates(t_data *data)
 			exit(EXIT_FAILURE);
 		}
 		free(buf);
+		index++;
 	}
 }
 
 void map_init(t_data *data)
 {
-	data->map = ft_calloc(1 , sizeof(int[data->rows][data->columns]));
+	int index;
+	index = 0;
+
+	data->map = (int**)ft_calloc(data->rows, sizeof(int*));
 	if (data->map == NULL)
 	{
 		mlx_destroy_window(data->mlx, data->win);
@@ -134,16 +143,47 @@ void map_init(t_data *data)
 		free(data->mlx);
 		exit(EXIT_FAILURE);
 	}
-	data->map_color = ft_calloc(1 , sizeof(int[data->rows][data->columns]));
-	if(data->map_color == NULL)
+	while (index < data->rows)
+	{
+		data->map[index] = (int*)malloc(data->columns * sizeof(int));
+		if (data->map[index] == NULL)
+		{
+			mlx_destroy_window(data->mlx, data->win);
+			mlx_destroy_display(data->mlx);
+			free(data->mlx);
+			exit(EXIT_FAILURE);
+		}
+		index++;
+	}
+	index = 0;
+	data->map_color = (int**)ft_calloc(data->rows, sizeof(int*));
+	if (data->map_color == NULL)
 	{
 		mlx_destroy_window(data->mlx, data->win);
 		mlx_destroy_display(data->mlx);
 		free(data->mlx);
-		free(data->map);
 		exit(EXIT_FAILURE);
 	}
+	while (index < data->rows)
+	{
+		data->map_color[index] = (int*)malloc(data->columns * sizeof(int));
+		if (data->map_color[index] == NULL)
+		{
+			mlx_destroy_window(data->mlx, data->win);
+			mlx_destroy_display(data->mlx);
+			free(data->mlx);
+			exit(EXIT_FAILURE);
+		}
+		index++;
+	}
 	map_init_coordinates(data);
+	for (int r = 0; r < data->rows; r++)
+	{
+		for (int c = 0; c < data->columns; c++)
+		{
+			ft_printf("x, y, color [%d, %d, %d] %d \n", r, c, data->map_color[r][c], data->map[r][c]);
+		}
+	}
 }
 
 void data_init(t_data *data)
