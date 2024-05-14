@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 15:49:54 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/14 20:00:38 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/14 21:29:39 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,7 @@ void map_init(t_data *data)
 		}
 		index++;
 	}
+	ft_printf("hello\n");
 	map_init_coordinates(data);
 	for (int r = 0; r < data->rows; r++)
 	{
