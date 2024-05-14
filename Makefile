@@ -21,6 +21,7 @@ LIBFT.A     := libft.a
 MLX         := mlx_linux
 MLX_L_FLAGS := -Llib/mlx_linux -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -lz
 MLX_C_FLAGS := -I/usr/include -Ilib/mlx_linux -Ilib/libft -O3
+DEBUG_FLAGS := -g
 
 
 #---------------------------------------------------------------------------------
@@ -60,7 +61,7 @@ mlx:
 
 #Link
 $(TARGET): $(OBJECTS)
-	$(CC) $^ $(MLX_L_FLAGS) $(LIB)/$(LIBFT)/$(LIB)/$(LIBFT.A) -o  $(TARGETDIR)/$(TARGET) -g
+	$(CC) $^ $(MLX_L_FLAGS) $(LIB)/$(LIBFT)/$(LIB)/$(LIBFT.A) -o  $(TARGETDIR)/$(TARGET) 
 
 #Compile
 $(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT)
