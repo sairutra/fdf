@@ -93,16 +93,19 @@ do
 echo $invalid
 done
 
-ARG="resources/incorrect_maps/empty.fdf" 
+ARG="resources/incorrect_maps/column--.fdf"
 ./$file $ARG >> fdf.log 2>&1 &
 PID=$(pgrep fdf)
+# echo $PID
+wait $PID
 status=$?
-echo $PID
 echo $status
-kill $PID
+# kill $PID
 # valgrind --error-exitcode=42 --leak-check=full ./$file $ARG >>fdf.log 2>&1
 mstatus=$?
 
+
+#https://stackoverflow.com/questions/20017805/bash-capture-output-of-command-run-in-background
 
 if [ $status != 0 ];
 then 
