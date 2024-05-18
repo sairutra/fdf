@@ -93,36 +93,53 @@ do
 echo $invalid
 done
 
-ARG="resources/incorrect_maps/column--.fdf"
-./$file $ARG >> fdf.log 2>&1 &
-PID=$(pgrep fdf)
-# echo $PID
-wait $PID
+ARG="resources/incorrect_maps/empty.fdf"
+
+
+coproc { timeout --preserve-status 1s sh -c " ./$file $ARG >> fdf.log 2>&1"; }
+COPROC_PID_backup=$COPROC_PID
+wait $COPROC_PID_backup
 status=$?
+
 echo $status
-# kill $PID
-# valgrind --error-exitcode=42 --leak-check=full ./$file $ARG >>fdf.log 2>&1
+
+coproc { timeout --preserve-status 1s sh -c "valgrind --error-exitcode=42 --leak-check=full ./$file $ARG >>fdf.log 2>&1"; }
+COPROC_PID_backup=$COPROC_PID
+wait $COPROC_PID_backup
 mstatus=$?
 
+echo $mstatus
 
 #https://stackoverflow.com/questions/20017805/bash-capture-output-of-command-run-in-background
+#https://stackoverflow.com/questions/9954794/execute-a-shell-function-with-timeout
+#https://stackoverflow.com/questions/57877451/retrieving-output-and-exit-code-of-a-coprocess
 
-if [ $status != 0 ];
+if [ $status == 0 ] || [ $status == 143 ];
 then 
-printf "${BMAG} ${LINEP}${GRN}OK ${RESET}";
-if [ $mstatus == 42 ];
-then 
-printf "${RED}MKO${RESET}\n";
-else 
-printf "${GRN}MOK${RESET}\n";
-fi
-else
 printf "${BMAG} ${LINEP}${RED}FAIL ${RESET}";
 if [ $mstatus == 42 ];
 then 
 printf "${RED}MKO${RESET}\n";
 else 
+if [ $mstatus == 143 ];
+then
+printf "${RED}MKO${RESET}\n";
+else
 printf "${GRN}MOK${RESET}\n";
+fi
+fi
+else
+printf "${BMAG} ${LINEP}${GRN}OK ${RESET}";
+if [ $mstatus == 42 ];
+then 
+printf "${RED}MKO${RESET}\n";
+else 
+if [ $mstatus == 143 ];
+then
+printf "${RED}MKO${RESET}\n";
+else
+printf "${GRN}MOK${RESET}\n";
+fi
 fi
 FAIL=true;
 fi
