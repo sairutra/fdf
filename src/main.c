@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/18 11:43:03 by spenning          #+#    #+#             */
+/*   Updated: 2024/05/18 11:44:35 by spenning         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/fdf.h"
 #include <stdio.h>
 
-void draw_rows(t_data *img, int width, int height, int trgb)
+void	draw_rows(t_data *img, int width, int height, int trgb)
 {
-	int windex;
-	int hindex;
+	int	windex;
+	int	hindex;
 
 	windex = 0;
 	hindex = 0;
@@ -26,10 +38,10 @@ void draw_rows(t_data *img, int width, int height, int trgb)
 	}
 }
 
-void draw_columns(t_data *img, int width, int height, int trgb)
+void	draw_columns(t_data *img, int width, int height, int trgb)
 {
-	int windex;
-	int hindex;
+	int	windex;
+	int	hindex;
 
 	windex = 0;
 	hindex = 0;
@@ -51,21 +63,21 @@ void draw_columns(t_data *img, int width, int height, int trgb)
 	}
 }
 
-void draw_squares(t_data *img, int width, int height, int trgb)
+void	draw_squares(t_data *img, int width, int height, int trgb)
 {
 	draw_rows(img, width, height, trgb);
 	draw_columns(img, width, height, trgb);
 }
 
 int	main(int argc, char **argv)
-{	
-	int 	color;
+{
+	int		color;
 	t_data	data;
 
 	if (argc == 2)
 		parse(argv, &data);
 	else
-		return(EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	color = trgb(200, 100, 0, 0);
 	data_init(&data);
 	draw_squares(&data, data.width, data.height, rev_color(color));

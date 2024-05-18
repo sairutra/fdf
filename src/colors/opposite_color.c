@@ -6,18 +6,18 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 13:23:31 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/07 14:52:42 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/18 11:45:17 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/fdf.h"
 
-int rev_color(int trgb)
+int	rev_color(int trgb)
 {
-	int t;
-	int r;
-	int g;
-	int b;
+	int	t;
+	int	r;
+	int	g;
+	int	b;
 
 	t = 0;
 	r = 0;

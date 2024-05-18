@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 18:22:50 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/12 17:50:46 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/18 11:46:56 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ int	destroy(t_data *data)
 	return (0);
 }
 
-void hooks(t_data *data)
+void	hooks(t_data *data)
 {
-	mlx_hook(data->win, 2, 1L<<0, keypress, data);
+	mlx_hook(data->win, 2, 1L << 0, keypress, data);
 	mlx_hook(data->win, 17, 0L, destroy, data);
 }
