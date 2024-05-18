@@ -79,10 +79,50 @@ usage_fatal "option '-f, --file' requires a value"
 exit 1
 fi
 
-##### input tests
+echo -e "${BLU}----------------------------------
+|         Input tests            |
+----------------------------------${RESET}" 
 
+##### input tests
 # valgrind ./fdf arg1 arg2 arg3 etc
 
+invalids=$(find resources/incorrect_maps -type f)
+
+for invalid in $invalids
+do
+echo $invalid
+done
+
+ARG="resources/incorrect_maps/empty.fdf" 
+./$file $ARG >> fdf.log 2>&1 &
+PID=$(pgrep fdf)
+status=$?
+echo $PID
+echo $status
+kill $PID
+# valgrind --error-exitcode=42 --leak-check=full ./$file $ARG >>fdf.log 2>&1
+mstatus=$?
+
+
+if [ $status != 0 ];
+then 
+printf "${BMAG} ${LINEP}${GRN}OK ${RESET}";
+if [ $mstatus == 42 ];
+then 
+printf "${RED}MKO${RESET}\n";
+else 
+printf "${GRN}MOK${RESET}\n";
+fi
+else
+printf "${BMAG} ${LINEP}${RED}FAIL ${RESET}";
+if [ $mstatus == 42 ];
+then 
+printf "${RED}MKO${RESET}\n";
+else 
+printf "${GRN}MOK${RESET}\n";
+fi
+FAIL=true;
+fi
 
 
 
