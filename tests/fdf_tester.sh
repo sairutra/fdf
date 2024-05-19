@@ -16,6 +16,8 @@ LOG_DIR=logs/
 FDF_LOG=fdf.log
 FDF_MLOG=fdf_memory.log
 FDF_MAP=fdf_map.log
+ESC=ESC
+CLOSE=CLOSE
 
 usage() {
 	cat <<EOF
@@ -34,6 +36,9 @@ Arguments:
 
 EOF
 }
+
+#prepare xdotool
+make -C ./xdotool
 
 # handy logging and error handling functions
 log() { printf '%s\n' "$*"; }
@@ -103,96 +108,166 @@ wait $COPROC_PID_backup
 mstatus=$?
 
 if [ $status == 0 ] || [ $status == 143 ];
-then 
-printf "${BMAG} ${LINEP}${RED}FAIL ${RESET}";
-echo -e "Test: $file $1: expected status = 1; received status $status" >> $LOG_DIR/$FDF_MAP 
-FAIL=true;
-if [ $mstatus == 42 ];
-then 
-printf "${RED}MKO${RESET}\n";
-echo -e "Test: $file $1: expected memory_status = 1; received memory_status $mstatus" >> $LOG_DIR/$FDF_MAP 
-FAIL=true;
-else 
-if [ $mstatus == 143 ];
-then
-printf "${RED}MKO${RESET}\n";
-echo -e "Test: $file $1: expected memory_status = 1; received memory_status $mstatus" >> $LOG_DIR/$FDF_MAP 
-FAIL=true;
+	then 
+	printf "${BMAG} ${LINEP}${RED}FAIL ${RESET}";
+	echo -e "Test: $file $1: expected status = 1; received status $status" >> $LOG_DIR/$FDF_MAP 
+	FAIL=true;
+	if [ $mstatus == 42 ];
+		then 
+		printf "${RED}MKO${RESET}\n";
+		echo -e "Test: $file $1: expected memory_status = 1; received memory_status $mstatus" >> $LOG_DIR/$FDF_MAP 
+		FAIL=true;
+		else 
+			if [ $mstatus == 143 ];
+				then
+				printf "${RED}MKO${RESET}\n";
+				echo -e "Test: $file $1: expected memory_status = 1; received memory_status $mstatus" >> $LOG_DIR/$FDF_MAP 
+				FAIL=true;
+			else
+				printf "${GRN}MOK${RESET}\n";
+			fi
+	fi
 else
-printf "${GRN}MOK${RESET}\n";
-fi
-fi
-else
-printf "${BMAG} ${LINEP}${GRN}OK ${RESET}";
-if [ $mstatus == 42 ];
-then 
-printf "${RED}MKO${RESET}\n";
-echo -e "Test: $file $1: expected memory_status = 1; received memory_status $mstatus" >> $LOG_DIR/$FDF_MAP 
-FAIL=true;
-else 
-if [ $mstatus == 143 ];
-then
-printf "${RED}MKO${RESET}\n";
-echo -e "Test: $file $1: expected memory_status = 1; received memory_status $mstatus" >> $LOG_DIR/$FDF_MAP 
-FAIL=true;
-else
-printf "${GRN}MOK${RESET}\n";
-fi
-fi
+	printf "${BMAG} ${LINEP}${GRN}OK ${RESET}";
+	if [ $mstatus == 42 ];
+		then 
+		printf "${RED}MKO${RESET}\n";
+		echo -e "Test: $file $1: expected memory_status = 1; received memory_status $mstatus" >> $LOG_DIR/$FDF_MAP 
+		FAIL=true;
+		else 
+			if [ $mstatus == 143 ];
+				then
+				printf "${RED}MKO${RESET}\n";
+				echo -e "Test: $file $1: expected memory_status = 1; received memory_status $mstatus" >> $LOG_DIR/$FDF_MAP 
+				FAIL=true;
+			else
+				printf "${GRN}MOK${RESET}\n";
+			fi
+	fi
 FAIL=true;
 fi
 }
 
+correct_unittest () {
+coproc { ./$file $1 >> $LOG_DIR/$FDF_LOG 2>&1; }
+sleep 1
+activewindow=$(xwininfo -root -tree | grep -P 'fdf(?!_)' | awk '{print $1}')
+sleep 9
+LD_LIBRARY_PATH=xdotool ./xdotool/xdotool windowactivate $activewindow
+if [ $2 == $ESC ] ;
+	then
+	LD_LIBRARY_PATH=xdotool ./xdotool/xdotool key Escape
+fi
+if [ $2 == $CLOSE ] ;
+	then
+	LD_LIBRARY_PATH=xdotool ./xdotool/xdotool key Alt_L+F4
+fi
+COPROC_PID_backup=$COPROC_PID
+wait $COPROC_PID_backup
+status=$?
 
+coproc { valgrind --error-exitcode=42 --leak-check=full ./$file $1 >> $LOG_DIR/$FDF_MLOG 2>&1; }
+sleep 1
+activewindow=$(xwininfo -root -tree | grep -P 'fdf(?!_)' | awk '{print $1}')
+sleep 9
+LD_LIBRARY_PATH=xdotool ./xdotool/xdotool windowactivate $activewindow
+if [ $2 == $ESC ] ;
+	then
+	LD_LIBRARY_PATH=xdotool ./xdotool/xdotool key Escape
+fi
+if [ $2 == $CLOSE ] ;
+	then
+	LD_LIBRARY_PATH=xdotool ./xdotool/xdotool key Alt_L+F4
+fi
+COPROC_PID_backup=$COPROC_PID
+wait $COPROC_PID_backup
+mstatus=$?
+
+printf "${BMAG} $file $1${RESET}"
+
+if [ $status != 0 ] ;
+	then 
+	printf "${BMAG} ${LINEP}${RED}FAIL ${RESET}";
+	echo -e "Test: $file $1: expected status = 0; received status $status" >> $LOG_DIR/$FDF_MAP 
+	FAIL=true;
+		if [ $mstatus != 0 ];
+		then 
+		printf "${RED}MKO${RESET}\n";
+		echo -e "Test: $file $1: expected memory_status = 0; received memory_status $mstatus" >> $LOG_DIR/$FDF_MAP 
+		FAIL=true;
+		else
+		printf "${GRN}MOK${RESET}\n";
+		fi
+else
+	printf "${BMAG} ${LINEP}${GRN}OK ${RESET}";
+		if [ $mstatus != 0 ];
+		then 
+		printf "${RED}MKO${RESET}\n";
+		echo -e "Test: $file $1: expected memory_status = 0; received memory_status $mstatus" >> $LOG_DIR/$FDF_MAP 
+		FAIL=true;
+		else
+		printf "${GRN}MOK${RESET}\n";
+		fi
+fi
+
+}
 ##### input tests
 
-# echo -e "${BLU}----------------------------------
-# |            input tests          |
-# ----------------------------------${RESET}" 
+echo -e "${BLU}----------------------------------
+|            input tests          |
+----------------------------------${RESET}" 
 
-# ARGS='lol "lol lol" "lol lol lol" "lol lol lol lol" "" no_exits.fdf ../random/test.fdf ../resources/invalid_maps/*'
+ARGS='lol "lol lol" "lol lol lol" "lol lol lol lol" "" no_exits.fdf ../random/test.fdf ../resources/invalid_maps/*'
 
-# eval set -- $ARGS
-# for ARG in "$@";
-# do
-# fail_unittest "$ARG"
-# done
+eval set -- $ARGS
+for ARG in "$@";
+do
+fail_unittest "$ARG"
+done
 
 # ##### testing maps 
 # #https://stackoverflow.com/questions/20017805/bash-capture-output-of-command-run-in-background
 # #https://stackoverflow.com/questions/9954794/execute-a-shell-function-with-timeout
 # #https://stackoverflow.com/questions/57877451/retrieving-output-and-exit-code-of-a-coprocess
 
-# echo -e "${BLU}----------------------------------
-# |            Map tests            |
-# ----------------------------------${RESET}" 
+echo -e "${BLU}----------------------------------
+|       Incorrect Map tests       |
+----------------------------------${RESET}" 
+
+
+invalids=$(find ../resources/incorrect_maps -type f)
+
+for invalid in $invalids
+do
+fail_unittest "$invalid"
+done
+
+
+echo -e "${BLU}----------------------------------
+|        Correct Map tests ESC    |
+----------------------------------${RESET}" 
 
 #https://groups.google.com/g/xdotool-users/c/Z8g4ZHKYAsE This is important fot the xdo tool command!
+#https://unix.stackexchange.com/questions/85205/is-there-a-way-to-simulate-a-close-event-on-various-windows-using-the-terminal
+#https://askubuntu.com/questions/695017/why-does-my-xdotool-key-command-not-work
 
-# invalids=$(find ../resources/incorrect_maps -type f)
+valids=$(find ../resources/correct_maps -type f)
 
-# for invalid in $invalids
-# do
-# fail_unittest "$invalid"
-# done
+for valid in $valids
+do
+correct_unittest "$valid" "$ESC"
+done
 
-# cd xdotool && make && make xdotool libxdo.so && ln -s libxdo.so libxdo.so.0 && cd ../
+# echo -e "${BLU}----------------------------------
+# |      Correct Map tests ALT+F4   |
+# ----------------------------------${RESET}" 
 
-make -C ./xdotool
+valids=$(find ../resources/correct_maps -type f)
 
-ARG="../resources/correct_maps/10-70.fdf"
-coproc process { ./$file $ARG >> $LOG_DIR/$FDF_LOG 2>&1; }
-sleep 1
-activewindow=$(xwininfo -root -tree | grep -P 'fdf(?!_)' | awk '{print $1}')
-echo $(xwininfo -root -tree | grep -P 'fdf(?!_)')
-echo $activewindow
-sleep 1
-LD_LIBRARY_PATH=xdotool ./xdotool/xdotool windowactivate $activewindow
-LD_LIBRARY_PATH=xdotool ./xdotool/xdotool key Escape
-COPROC_PID_backup=$COPROC_PID
-wait $COPROC_PID_backup
-status=$?
-echo $status
+for valid in $valids
+do
+correct_unittest "$valid" "$CLOSE"
+done
 
 
 if [ $FAIL = true ];
