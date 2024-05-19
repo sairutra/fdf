@@ -176,7 +176,9 @@ fi
 # fail_unittest "$invalid"
 # done
 
-cd xdotool && make xdotool libxdo.so && ln -s libxdo.so  libxdo.so.0
+# cd xdotool && make && make xdotool libxdo.so && ln -s libxdo.so libxdo.so.0 && cd ../
+
+make -C ./xdotool
 
 ARG="../resources/correct_maps/10-70.fdf"
 coproc process { ./$file $ARG >> $LOG_DIR/$FDF_LOG 2>&1; }
