@@ -150,9 +150,10 @@ echo -e "${BLU}----------------------------------
 |            input tests          |
 ----------------------------------${RESET}" 
 
-ARGS=$(find ../resources/incorrect_maps -type f)
+ARGS='lol "lol lol" "lol lol lol" "lol lol lol lol" "" no_exits.fdf ../random/test.fdf ../resources/invalid_maps/*'
 
-for ARG in $ARGS
+eval set -- $ARGS
+for ARG in "$@";
 do
 fail_unittest "$ARG"
 done
@@ -170,65 +171,11 @@ invalids=$(find ../resources/incorrect_maps -type f)
 
 for invalid in $invalids
 do
-
-ARG=$invalid
-
-printf "${BMAG} $file $ARG${RESET}"
-
-coproc { timeout --preserve-status 1s sh -c " ./$file $ARG >> $LOG_DIR/$FDF_LOG 2>&1"; }
-COPROC_PID_backup=$COPROC_PID
-wait $COPROC_PID_backup
-status=$?
-
-coproc { timeout --preserve-status 1s sh -c "valgrind --error-exitcode=42 --leak-check=full ./$file $ARG >> $LOG_DIR/$FDF_MLOG 2>&1"; }
-COPROC_PID_backup=$COPROC_PID
-wait $COPROC_PID_backup
-mstatus=$?
-
-if [ $status == 0 ] || [ $status == 143 ];
-then 
-printf "${BMAG} ${LINEP}${RED}FAIL ${RESET}";
-echo -e "Test: $file $ARG: expected status = 1; received status $status" >> $LOG_DIR/$FDF_MAP 
-FAIL=true;
-if [ $mstatus == 42 ];
-then 
-printf "${RED}MKO${RESET}\n";
-echo -e "Test: $file $ARG: expected memory_status = 1; received memory_status $mstatus" >> $LOG_DIR/$FDF_MAP 
-FAIL=true;
-else 
-if [ $mstatus == 143 ];
-then
-printf "${RED}MKO${RESET}\n";
-echo -e "Test: $file $ARG: expected memory_status = 1; received memory_status $mstatus" >> $LOG_DIR/$FDF_MAP 
-FAIL=true;
-else
-printf "${GRN}MOK${RESET}\n";
-fi
-fi
-else
-printf "${BMAG} ${LINEP}${GRN}OK ${RESET}";
-if [ $mstatus == 42 ];
-then 
-printf "${RED}MKO${RESET}\n";
-echo -e "Test: $file $ARG: expected memory_status = 1; received memory_status $mstatus" >> $LOG_DIR/$FDF_MAP 
-FAIL=true;
-else 
-if [ $mstatus == 143 ];
-then
-printf "${RED}MKO${RESET}\n";
-echo -e "Test: $file $ARG: expected memory_status = 1; received memory_status $mstatus" >> $LOG_DIR/$FDF_MAP 
-FAIL=true;
-else
-printf "${GRN}MOK${RESET}\n";
-fi
-fi
-FAIL=true;
-fi
-
+fail_unittest "$invalid"
 done
-
 
 if [ $FAIL = true ];
 then echo -e "${RED}Check logs/*.log for errors${RESET}"
+else echo -e "${GRE}Congratulations, all tests are succesfull :)${RESET}"
 fi
 exit 0
