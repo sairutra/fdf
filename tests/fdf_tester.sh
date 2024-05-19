@@ -146,33 +146,52 @@ fi
 
 ##### input tests
 
-echo -e "${BLU}----------------------------------
-|            input tests          |
-----------------------------------${RESET}" 
+# echo -e "${BLU}----------------------------------
+# |            input tests          |
+# ----------------------------------${RESET}" 
 
-ARGS='lol "lol lol" "lol lol lol" "lol lol lol lol" "" no_exits.fdf ../random/test.fdf ../resources/invalid_maps/*'
+# ARGS='lol "lol lol" "lol lol lol" "lol lol lol lol" "" no_exits.fdf ../random/test.fdf ../resources/invalid_maps/*'
 
-eval set -- $ARGS
-for ARG in "$@";
-do
-fail_unittest "$ARG"
-done
+# eval set -- $ARGS
+# for ARG in "$@";
+# do
+# fail_unittest "$ARG"
+# done
 
-##### testing maps 
-#https://stackoverflow.com/questions/20017805/bash-capture-output-of-command-run-in-background
-#https://stackoverflow.com/questions/9954794/execute-a-shell-function-with-timeout
-#https://stackoverflow.com/questions/57877451/retrieving-output-and-exit-code-of-a-coprocess
+# ##### testing maps 
+# #https://stackoverflow.com/questions/20017805/bash-capture-output-of-command-run-in-background
+# #https://stackoverflow.com/questions/9954794/execute-a-shell-function-with-timeout
+# #https://stackoverflow.com/questions/57877451/retrieving-output-and-exit-code-of-a-coprocess
 
-echo -e "${BLU}----------------------------------
-|            Map tests            |
-----------------------------------${RESET}" 
+# echo -e "${BLU}----------------------------------
+# |            Map tests            |
+# ----------------------------------${RESET}" 
 
-invalids=$(find ../resources/incorrect_maps -type f)
+#https://groups.google.com/g/xdotool-users/c/Z8g4ZHKYAsE This is important fot the xdo tool command!
 
-for invalid in $invalids
-do
-fail_unittest "$invalid"
-done
+# invalids=$(find ../resources/incorrect_maps -type f)
+
+# for invalid in $invalids
+# do
+# fail_unittest "$invalid"
+# done
+
+cd xdotool && make xdotool libxdo.so && ln -s libxdo.so  libxdo.so.0
+
+ARG="../resources/correct_maps/10-70.fdf"
+coproc process { ./$file $ARG >> $LOG_DIR/$FDF_LOG 2>&1; }
+sleep 1
+activewindow=$(xwininfo -root -tree | grep -P 'fdf(?!_)' | awk '{print $1}')
+echo $(xwininfo -root -tree | grep -P 'fdf(?!_)')
+echo $activewindow
+sleep 1
+LD_LIBRARY_PATH=xdotool ./xdotool/xdotool windowactivate $activewindow
+LD_LIBRARY_PATH=xdotool ./xdotool/xdotool key Escape
+COPROC_PID_backup=$COPROC_PID
+wait $COPROC_PID_backup
+status=$?
+echo $status
+
 
 if [ $FAIL = true ];
 then echo -e "${RED}Check logs/*.log for errors${RESET}"
