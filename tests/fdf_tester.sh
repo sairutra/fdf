@@ -10,8 +10,12 @@ CYN="\x1B[36m"
 BCYN="\x1B[1;36m"
 WHT="\x1B[37m"
 RESET="\x1B[0m"
-LINEP="\033[55G" 
+LINEP="\033[75G" 
 FAIL=false
+LOG_DIR=logs/
+FDF_LOG=fdf.log
+FDF_MLOG=fdf_memory.log
+FDF_MAP=fdf_map.log
 
 usage() {
 	cat <<EOF
@@ -79,51 +83,41 @@ usage_fatal "option '-f, --file' requires a value"
 exit 1
 fi
 
-echo -e "${BLU}----------------------------------
-|         Input tests            |
-----------------------------------${RESET}" 
+mkdir -p logs
 
-##### input tests
-# valgrind ./fdf arg1 arg2 arg3 etc
+truncate -s 0 $LOG_DIR/$FDF_LOG
+truncate -s 0 $LOG_DIR/$FDF_MLOG
+truncate -s 0 $LOG_DIR/$FDF_MAP 
 
-invalids=$(find resources/incorrect_maps -type f)
+fail_unittest () {
+printf "${BMAG} $file $1${RESET}"
 
-for invalid in $invalids
-do
-echo $invalid
-done
-
-ARG="resources/incorrect_maps/empty.fdf"
-
-
-coproc { timeout --preserve-status 1s sh -c " ./$file $ARG >> fdf.log 2>&1"; }
+coproc { timeout --preserve-status 1s sh -c " ./$file $1 >> $LOG_DIR/$FDF_LOG 2>&1"; }
 COPROC_PID_backup=$COPROC_PID
 wait $COPROC_PID_backup
 status=$?
 
-echo $status
-
-coproc { timeout --preserve-status 1s sh -c "valgrind --error-exitcode=42 --leak-check=full ./$file $ARG >>fdf.log 2>&1"; }
+coproc { timeout --preserve-status 1s sh -c "valgrind --error-exitcode=42 --leak-check=full ./$file $1 >> $LOG_DIR/$FDF_MLOG 2>&1"; }
 COPROC_PID_backup=$COPROC_PID
 wait $COPROC_PID_backup
 mstatus=$?
 
-echo $mstatus
-
-#https://stackoverflow.com/questions/20017805/bash-capture-output-of-command-run-in-background
-#https://stackoverflow.com/questions/9954794/execute-a-shell-function-with-timeout
-#https://stackoverflow.com/questions/57877451/retrieving-output-and-exit-code-of-a-coprocess
-
 if [ $status == 0 ] || [ $status == 143 ];
 then 
 printf "${BMAG} ${LINEP}${RED}FAIL ${RESET}";
+echo -e "Test: $file $1: expected status = 1; received status $status" >> $LOG_DIR/$FDF_MAP 
+FAIL=true;
 if [ $mstatus == 42 ];
 then 
 printf "${RED}MKO${RESET}\n";
+echo -e "Test: $file $1: expected memory_status = 1; received memory_status $mstatus" >> $LOG_DIR/$FDF_MAP 
+FAIL=true;
 else 
 if [ $mstatus == 143 ];
 then
 printf "${RED}MKO${RESET}\n";
+echo -e "Test: $file $1: expected memory_status = 1; received memory_status $mstatus" >> $LOG_DIR/$FDF_MAP 
+FAIL=true;
 else
 printf "${GRN}MOK${RESET}\n";
 fi
@@ -133,10 +127,97 @@ printf "${BMAG} ${LINEP}${GRN}OK ${RESET}";
 if [ $mstatus == 42 ];
 then 
 printf "${RED}MKO${RESET}\n";
+echo -e "Test: $file $1: expected memory_status = 1; received memory_status $mstatus" >> $LOG_DIR/$FDF_MAP 
+FAIL=true;
 else 
 if [ $mstatus == 143 ];
 then
 printf "${RED}MKO${RESET}\n";
+echo -e "Test: $file $1: expected memory_status = 1; received memory_status $mstatus" >> $LOG_DIR/$FDF_MAP 
+FAIL=true;
+else
+printf "${GRN}MOK${RESET}\n";
+fi
+fi
+FAIL=true;
+fi
+}
+
+
+##### input tests
+
+echo -e "${BLU}----------------------------------
+|            input tests          |
+----------------------------------${RESET}" 
+
+ARGS=$(find ../resources/incorrect_maps -type f)
+
+for ARG in $ARGS
+do
+fail_unittest "$ARG"
+done
+
+##### testing maps 
+#https://stackoverflow.com/questions/20017805/bash-capture-output-of-command-run-in-background
+#https://stackoverflow.com/questions/9954794/execute-a-shell-function-with-timeout
+#https://stackoverflow.com/questions/57877451/retrieving-output-and-exit-code-of-a-coprocess
+
+echo -e "${BLU}----------------------------------
+|            Map tests            |
+----------------------------------${RESET}" 
+
+invalids=$(find ../resources/incorrect_maps -type f)
+
+for invalid in $invalids
+do
+
+ARG=$invalid
+
+printf "${BMAG} $file $ARG${RESET}"
+
+coproc { timeout --preserve-status 1s sh -c " ./$file $ARG >> $LOG_DIR/$FDF_LOG 2>&1"; }
+COPROC_PID_backup=$COPROC_PID
+wait $COPROC_PID_backup
+status=$?
+
+coproc { timeout --preserve-status 1s sh -c "valgrind --error-exitcode=42 --leak-check=full ./$file $ARG >> $LOG_DIR/$FDF_MLOG 2>&1"; }
+COPROC_PID_backup=$COPROC_PID
+wait $COPROC_PID_backup
+mstatus=$?
+
+if [ $status == 0 ] || [ $status == 143 ];
+then 
+printf "${BMAG} ${LINEP}${RED}FAIL ${RESET}";
+echo -e "Test: $file $ARG: expected status = 1; received status $status" >> $LOG_DIR/$FDF_MAP 
+FAIL=true;
+if [ $mstatus == 42 ];
+then 
+printf "${RED}MKO${RESET}\n";
+echo -e "Test: $file $ARG: expected memory_status = 1; received memory_status $mstatus" >> $LOG_DIR/$FDF_MAP 
+FAIL=true;
+else 
+if [ $mstatus == 143 ];
+then
+printf "${RED}MKO${RESET}\n";
+echo -e "Test: $file $ARG: expected memory_status = 1; received memory_status $mstatus" >> $LOG_DIR/$FDF_MAP 
+FAIL=true;
+else
+printf "${GRN}MOK${RESET}\n";
+fi
+fi
+else
+printf "${BMAG} ${LINEP}${GRN}OK ${RESET}";
+if [ $mstatus == 42 ];
+then 
+printf "${RED}MKO${RESET}\n";
+echo -e "Test: $file $ARG: expected memory_status = 1; received memory_status $mstatus" >> $LOG_DIR/$FDF_MAP 
+FAIL=true;
+else 
+if [ $mstatus == 143 ];
+then
+printf "${RED}MKO${RESET}\n";
+echo -e "Test: $file $ARG: expected memory_status = 1; received memory_status $mstatus" >> $LOG_DIR/$FDF_MAP 
+FAIL=true;
 else
 printf "${GRN}MOK${RESET}\n";
 fi
@@ -144,53 +225,10 @@ fi
 FAIL=true;
 fi
 
+done
 
 
-##### testing maps 
-
-
-# valgrind ./fdf test correct maps
-
-# valgrind ./fdf test incorrect maps
-
-
-
-
-
-# headers=$(find $dir -type f -name "*.h")
-
-# files=$(find $dir -type f -name "*.c")
-
-# if [ $print_intro = true ];
-# then echo -e "${YEL}Norminette${RESET}" 
-# else :
-# fi
-
-# for header in $headers
-# do
-# norminette $header >>norminette.log 2>&1
-# status=$?
-# if [ $status -eq 0 ];
-# then echo -e "${BMAG}$header ${LINEP}${GRN}OK${RESET}" 
-# else 
-# echo -e "${BMAG}$header ${LINEP}${RED}FAIL${RESET}"
-# FAIL=true
-# fi
-# done
-
-# for file in $files
-# do
-# norminette $file >>norminette.log 2>&1
-# status=$?
-# if [ $status -eq 0 ];
-# then echo -e "${BMAG}$file ${LINEP}${GRN}OK${RESET}" 
-# else 
-# echo -e "${BMAG}$file ${LINEP}${RED}FAIL${RESET}"
-# FAIL=true
-# fi
-# done
-
-# if [ $FAIL = true ];
-# then echo -e "${RED}Check norminette_tester/norminette.log for errors${RESET}"
-# fi
-# exit 0
+if [ $FAIL = true ];
+then echo -e "${RED}Check logs/*.log for errors${RESET}"
+fi
+exit 0
