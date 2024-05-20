@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:09:32 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/20 16:33:20 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/20 16:52:25 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,16 @@ void	pixel_put(t_data *data, int x, int y, int color);
 //[Error]
 // No error value
 void data_init(t_data *data);
+//[Description]
+//This function initializes the map used in the program.
+//[Parameters]
+//t_data *data
+//[Return]
+//Function returns nothing
+//[Error]
+// No error value
+void map_init(t_data *data);
+
 
 //free
 
