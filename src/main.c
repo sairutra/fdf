@@ -6,7 +6,7 @@
 /*   By: mynodeus <mynodeus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 11:43:03 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/20 23:39:54 by mynodeus         ###   ########.fr       */
+/*   Updated: 2024/05/20 23:47:46 by mynodeus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,10 +156,10 @@ void draw_line(t_data *data, int ax, int ay, int bx, int by)
 	isometric(&ax, &ay, az);
 	isometric(&bx, &by, bz);
 	// printf("by %d\n", by);
-	ax += 300 + (WIDTH - 300) / 2;
-	bx += 300 + (WIDTH - 300) / 2;
-	ay += data->height / 2;
-	by += data->height / 2;
+	ax += WIDTH / 2;
+	bx += WIDTH / 2;
+	ay += HEIGHT / 3;
+	by += HEIGHT / 3;
 	// printf("by %d\n", by);
 
 	// printf("zoom width height ax ay bx by %d %d %d %d %d %d %d\n", zoom, data->width, data->height ,ax, ay, bx, by);
