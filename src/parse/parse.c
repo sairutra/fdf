@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mynodeus <mynodeus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 14:51:29 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/20 18:06:09 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/20 20:41:44 by mynodeus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 
 int	check_path(char *path)
 {
-	int	i;
 	int	len;
 
-	i = 0;
 	len = ft_strlen(path);
 	if (ft_strncmp(path + (len - 3), "fdf", 3))
 		return (1);
