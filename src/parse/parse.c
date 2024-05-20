@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 14:51:29 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/20 14:48:46 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/20 14:54:58 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void parse(char **argv, t_data* img)
 	img->map_path = path;
 	img->columns = parse_colom(path);
 	img->rows = parse_rows(path, img->columns);
-	if (img->columns == -1 || img->rows == -1)
+	ft_printf("columns: %d rows: %d\n", img->columns, img->rows);
+	if (img->columns <= 0 || img->rows <= 0)
 	{
 		get_next_line(0, 2);
 		ft_printf("columns: %d rows: %d\n", img->columns, img->rows);

@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 14:59:08 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/12 15:09:08 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:14:04 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int parse_rows_check_coordinate_color_rgb(char *buf)
 	hex_b[0] = buf[6];
 	hex_b[1] = buf[7];
 	hex_b[2] = 0;
-	ft_printf("buf %s, buf[0]: %c buf[1]: %c\n", buf, buf[0], buf[1]);
+	ft_printf("buf: %s buf[0]: %c buf[1]: %c\n", buf, buf[0], buf[1]);
 	if(buf[0] != '0' || buf[1] != 'x')
 		return (EXIT_FAILURE);
 	hex = hstoi(hex_r);
@@ -114,12 +114,15 @@ int parse_rows_check_coordinate_color(char *buf, char *bv, char *bc)
 
 	unvalid = 0;
 	len = ft_strlen(bc); 
-	// ft_printf("len %d\n", len);
+	ft_printf("len %d\n", len);
+	ft_printf("bc[8] %d\n", bc[8]);
+	ft_printf("ascii nl %d\n", '\n');
+	ft_printf("bc %s\n", bc);
 	if(len == 4)
 		unvalid = parse_rows_check_coordinate_color_r(bc);
 	else if (len == 6)
 		unvalid = parse_rows_check_coordinate_color_rg(bc);
-	else if (len == 8)
+	else if (len == 8 || (len == 9 && bc[8] == '\n'))
 		unvalid = parse_rows_check_coordinate_color_rgb(bc);
 	else
 		return(EXIT_FAILURE);
