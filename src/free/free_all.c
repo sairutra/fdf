@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 15:42:52 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/20 17:25:38 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/20 17:28:16 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,5 @@ void	free_all_mlx(t_data *data)
 		free(data->map_color[index++]);
 	free(data->map_color);
 	free(data->mlx);
+	exit(EXIT_FAILURE);
 }

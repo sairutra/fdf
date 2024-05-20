@@ -6,35 +6,11 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 15:49:54 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/20 17:08:07 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/20 17:32:05 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/fdf.h"
-
-int nhti(char *hex, int n)
-{
-	int index;
-	unsigned char byte;
-	unsigned int val;
-
-	val = 0;
-	index = 0;
-	while (index < n)
-	{
-		byte = hex[index++];
-		if (byte >= '0' && byte <= '9') 
-			byte = byte - '0';
-		else if (byte >= 'a' && byte <= 'f') 
-			byte = byte - 'a' + 10;
-		else if (byte >= 'A' && byte <= 'F') 
-			byte = byte - 'A' + 10;
-		else 
-			val += 1000;
-		val = (val << 4) | (byte & 0xF);
-	}
-	return(val);
-}
 
 void map_init_coordinates_values_vc_clr(t_data *data, char **b, int r, int c)
 {
@@ -112,39 +88,34 @@ int map_init_coordinates_values(t_data *data, char *buf, int row)
 	ft_printf("map init coordinates_values after free char array\n");
 	return (EXIT_SUCCESS);
 }
-void map_init_coordinates(t_data *data)
+
+// ft_printf("map init buf == NULL && index < data->rows\n");
+// ft_printf("map init buf  %s", buf);
+// ft_printf("map init if(map_init_coordinates_values(data, buf, index)\n");
+// ft_printf("if(buf)\n");
+void	map_init_coordinates(t_data *data)
 {
-	int	fd;
-	int index;
-	char *buf;
-	
+	int		fd;
+	int		index;
+	char	*buf;
+
 	index = 0;
 	fd = open(data->map_path, O_RDONLY);
 	if (fd == -1)
-	{
 		free_all_mlx(data);
-		exit(EXIT_FAILURE);
-	}
 	get_next_line(fd, 2);
 	while (index < data->rows)
 	{
 		buf = get_next_line(fd, 0);
 		if (buf == NULL && index < data->rows)
-		{
-			ft_printf("map init buf == NULL && index < data->rows\n");
 			free_all_mlx(data);
-			exit(EXIT_FAILURE);
-		}
-		ft_printf("map init buf  %s", buf);
 		if (map_init_coordinates_values(data, buf, index))
 		{
-			ft_printf("map init if(map_init_coordinates_values(data, buf, index)\n");
 			free(buf);
 			free_all_mlx(data);
 			exit(EXIT_FAILURE);
 		}
-		ft_printf("if(buf)\n");
-		if(buf)
+		if (buf)
 			free(buf);
 		index++;
 	}

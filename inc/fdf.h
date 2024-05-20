@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:09:32 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/20 17:16:13 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/20 17:31:46 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -324,6 +324,19 @@ int parse_rows_check_coordinate_color(char *buf, char *bv, char *bc);
 
 //utils
 
+//[Description]
+//This function takes a string and returns the integer value from based
+// based on hexidecimal values. the string should be a represenatiation
+// of a hexidecimal value, it for n indices.
+//[Parameters]
+//char *hex
+//int n
+//Function returns hexidecimal value in integer represenation, otherwise
+// it returns the error value
+//[Error]
+// the calculated value in the function minus 1000000 to indicate the 
+// string based is wrong
+int nhti(char *hex, int n);
 //[Description]
 //This function takes a string and returns the integer value from based
 // based on hexidecimal values. the string should be a represenatiation
