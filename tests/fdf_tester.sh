@@ -40,6 +40,8 @@ EOF
 #prepare xdotool
 make -C ./xdotool
 
+make -C ../ re
+
 # handy logging and error handling functions
 log() { printf '%s\n' "$*"; }
 error() { log "ERROR: $*" >&2; }
