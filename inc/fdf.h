@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:09:32 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/20 17:31:46 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:02:31 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,10 @@ typedef struct	s_vars {
 
 #ifndef HEIGHT
 # define HEIGHT 700
+#endif
+
+#ifndef DEBUG
+# define DEBUG 0
 #endif
 
 //colors
@@ -189,7 +193,7 @@ void data_init(t_data *data);
 //Function returns nothing
 //[Error]
 // No error value
-void map_init_coordinates(t_data *data);
+void map_init_coords(t_data *data);
 //[Description]
 //This function initializes the map used in the program.
 //[Parameters]
@@ -349,5 +353,16 @@ int nhti(char *hex, int n);
 // the calculated value in the function minus 1000000 to indicate the 
 // string based is wrong
 int	hstoi(char *hex);
+//[Description]
+//This function used to debug, if during compilation the debug flag is used
+// parameters are the same as ft_printf
+// with -D DEBUG=1
+//[Parameters]
+//char *format
+//variables
+//prints out the paremeters
+//[Error]
+// No error value
+void ft_debug(char* format, ...);
 
 #endif

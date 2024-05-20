@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 15:49:54 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/20 17:26:24 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:02:48 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,5 @@ void	map_init(t_data *data)
 			free_map(data);
 		i++;
 	}
-	map_init_coordinates(data);
+	map_init_coords(data);
 }

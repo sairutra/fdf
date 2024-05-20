@@ -6,12 +6,11 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 15:42:52 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/20 17:28:16 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:04:45 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/fdf.h"
-
 
 void	free_map(t_data *data)
 {
