@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mynodeus <mynodeus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:09:32 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/20 18:02:31 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/20 23:19:30 by mynodeus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ typedef struct	s_vars {
 }				t_vars;
 
 #ifndef WIDTH
-# define WIDTH 900
+# define WIDTH 1080
 #endif
 
 #ifndef HEIGHT
-# define HEIGHT 700
+# define HEIGHT 800
 #endif
 
 #ifndef DEBUG

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_coordinate_color.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mynodeus <mynodeus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 14:59:08 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/20 16:35:35 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/20 23:23:37 by mynodeus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,9 @@ int	parse_rows_check_coordinate_color(char *buf, char *bv, char *bc)
 
 	unvalid = 0;
 	len = ft_strlen(bc);
-	if (len == 4)
+	if (len == 4 || (len == 5 && bc[4] == '\n'))
 		unvalid = parse_rows_check_coordinate_color_r(bc);
-	else if (len == 6)
+	else if (len == 6 || (len == 7 && bc[6] == '\n'))
 		unvalid = parse_rows_check_coordinate_color_rg(bc);
 	else if (len == 8 || (len == 9 && bc[8] == '\n'))
 		unvalid = parse_rows_check_coordinate_color_rgb(bc);

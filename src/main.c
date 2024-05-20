@@ -6,7 +6,7 @@
 /*   By: mynodeus <mynodeus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 11:43:03 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/20 23:13:03 by mynodeus         ###   ########.fr       */
+/*   Updated: 2024/05/20 23:39:54 by mynodeus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,9 @@ void	isometric(int *x, int *y, int z)
 
 void draw_line(t_data *data, int ax, int ay, int bx, int by)
 {
-	// int zoom = (WIDTH / data->columns) / 3;
-	int zoom = (HEIGHT / data->rows) / 3;
+	int zoom = (WIDTH / data->columns / (2 * (WIDTH / HEIGHT)));
+	// int zoom = (WIDTH / data->rows) / 3;
+	// int zoom = 1;
 	int az;
 	int bz;
 
