@@ -6,13 +6,13 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 14:56:15 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/12 14:56:53 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/20 16:12:50 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/fdf.h"
 
-int parse_rows_check_column(char *buf, int columns)
+int	parse_rows_check_column(char *buf, int columns)
 {
 	char	**splitbuf;
 	int		count;
@@ -23,12 +23,12 @@ int parse_rows_check_column(char *buf, int columns)
 		return (EXIT_FAILURE);
 	while (splitbuf[count] != NULL)
 	{
-		if(!ft_strncmp(splitbuf[count], "\n", 1))
-			break;
+		if (!ft_strncmp(splitbuf[count], "\n", 1))
+			break ;
 		if (parse_rows_check_coordinate(splitbuf[count]))
 		{
 			free_char_array(splitbuf);
-			return(EXIT_FAILURE);
+			return (EXIT_FAILURE);
 		}
 		else
 			count++;
@@ -40,14 +40,35 @@ int parse_rows_check_column(char *buf, int columns)
 		return (EXIT_SUCCESS);
 }
 
-int parse_rows_check(char *buf, int columns)
+int	parse_rows_check(char *buf, int columns)
 {
-	if(parse_rows_check_column(buf, columns))
-		return(EXIT_FAILURE);
+	if (parse_rows_check_column(buf, columns))
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
-int parse_rows(char *path, int columns)
+char	*parse_first_row(int fd, int columns)
+{
+	char	*buf;
+
+	if (fd == -1)
+		return (NULL);
+	buf = get_next_line(fd, 1);
+	if (buf == NULL)
+	{
+		close(fd);
+		return (NULL);
+	}
+	if (parse_rows_check(buf, columns))
+	{
+		free(buf);
+		close(fd);
+		return (NULL);
+	}
+	return (buf);
+}
+
+int	parse_rows(char *path, int columns)
 {
 	int		count;
 	int		fd;
@@ -55,27 +76,16 @@ int parse_rows(char *path, int columns)
 
 	count = 1;
 	fd = open(path, O_RDONLY);
-	if (fd == -1)
-		return (-1);
-	buf = get_next_line(fd, 1);
+	buf = parse_first_row(fd, columns);
 	if (buf == NULL)
-	{
-		close(fd);
 		return (-1);
-	}
-	if (parse_rows_check(buf, columns))
-	{
-		free(buf);
-		close(fd);
-		return (-1);
-	}
 	while (buf != NULL)
 	{
 		count++;
 		free(buf);
 		buf = get_next_line(fd, 0);
-		if(buf == NULL)
-			break;
+		if (buf == NULL)
+			break ;
 		if (parse_rows_check(buf, columns))
 		{
 			free(buf);
