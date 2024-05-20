@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 14:51:29 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/20 14:54:58 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/20 16:03:28 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,12 @@ int	check_path(char *path)
 
 	i = 0;
 	len = ft_strlen(path);
-	if (ft_strncmp(path + (len - 3) , "fdf", 3))
+	if (ft_strncmp(path + (len - 3), "fdf", 3))
 		return (1);
 	return (0);
 }
 
-
-void parse(char **argv, t_data* img)
+void	parse(char **argv, t_data *img)
 {
 	char	*path;
 
@@ -43,4 +42,3 @@ void parse(char **argv, t_data* img)
 		exit(EXIT_FAILURE);
 	}
 }
-
