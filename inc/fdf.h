@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:09:32 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/20 16:52:25 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/20 17:16:13 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,7 @@ void	pixel_put(t_data *data, int x, int y, int color);
 
 //init
 
+
 //[Description]
 //This function initializes the data struct, which is used
 // to contain data regarding the mlx instance, window, image
@@ -180,6 +181,15 @@ void	pixel_put(t_data *data, int x, int y, int color);
 //[Error]
 // No error value
 void data_init(t_data *data);
+//[Description]
+//This function initializes the map coordinates used in the program.
+//[Parameters]
+//t_data *data
+//[Return]
+//Function returns nothing
+//[Error]
+// No error value
+void map_init_coordinates(t_data *data);
 //[Description]
 //This function initializes the map used in the program.
 //[Parameters]
@@ -193,6 +203,46 @@ void map_init(t_data *data);
 
 //free
 
+//[Description]
+//This function frees the display, the mlx instance, and
+// exits the program
+//[Parameters]
+//t_data *data
+//[Return]
+//Function returns nothing
+//[Error]
+// No error value
+void	free_dis(t_data *data);
+//[Description]
+//This function frees the window, display, the mlx instance, and
+// exits the program
+//[Parameters]
+//t_data *data
+//[Return]
+//Function returns nothing
+//[Error]
+// No error value
+void	free_win(t_data *data);
+//[Description]
+//This function frees the image, window, display, the mlx instance, and
+// exits the program
+//[Parameters]
+//t_data *data
+//[Return]
+//Function returns nothing
+//[Error]
+// No error value
+void	free_img(t_data *data);
+//[Description]
+//This function frees the map, image, window, display, 
+// the mlx instance, and exits the program
+//[Parameters]
+//t_data *data
+//[Return]
+//Function returns nothing
+//[Error]
+// No error value
+void	free_map(t_data *data);
 //[Description]
 //This function free's all the data related to mlx and the 
 // fdf program
