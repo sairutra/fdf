@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mynodeus <mynodeus@student.42.fr>          +#+  +:+       +#+        */
+/*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:09:32 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/13 21:30:36 by mynodeus         ###   ########.fr       */
+/*   Updated: 2024/05/20 16:33:20 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,4 +261,20 @@ int parse_rows_check_coordinate_value(char *buf);
 //[Error]
 // 1
 int parse_rows_check_coordinate_color(char *buf, char *bv, char *bc);
+
+//utils
+
+//[Description]
+//This function takes a string and returns the integer value from based
+// based on hexidecimal values. the string should be a represenatiation
+// of a hexidecimal value 
+//[Parameters]
+//char *hex
+//Function returns hexidecimal value in integer represenation, otherwise
+// it returns the error value
+//[Error]
+// the calculated value in the function minus 1000000 to indicate the 
+// string based is wrong
+int	hstoi(char *hex);
+
 #endif
