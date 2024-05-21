@@ -1,3 +1,5 @@
+include sources.mk
+
 #Compiler and Linker
 CC          := cc
 
@@ -29,9 +31,7 @@ DEBUG_FLAGS := -fsanitize=address -g
 #---------------------------------------------------------------------------------
 #DO NOT EDIT BELOW THIS LINE
 #---------------------------------------------------------------------------------
-SOURCES     := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS     := $(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
-DEPEN_BIN   := $(LIB)/$(LIBFT)/$(LIBFT.A)
 
 #Default Make
 
