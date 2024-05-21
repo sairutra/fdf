@@ -7,8 +7,9 @@ TARGET      := fdf
 #The Directories, Source, Includes, Objects, Binary and Resources
 SRCDIR      := src
 INCDIR      := inc
-BUILDDIR    := build/obj
+OBJDIR      := build/obj
 TARGETDIR   := build/bin
+BUILDIR     := build
 RESDIR      := res
 SRCEXT      := c
 OBJEXT      := o
@@ -19,6 +20,7 @@ LIB         := lib
 LIBFT       := libft
 LIBFT.A     := libft.a
 MLX         := mlx_linux
+MLX.A       := libmlx.a
 MLX_L_FLAGS := -Llib/mlx_linux -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -lz
 MLX_C_FLAGS := -I/usr/include -Ilib/mlx_linux -Ilib/libft -O3
 DEBUG_FLAGS := -fsanitize=address -g
@@ -28,45 +30,50 @@ DEBUG_FLAGS := -fsanitize=address -g
 #DO NOT EDIT BELOW THIS LINE
 #---------------------------------------------------------------------------------
 SOURCES     := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
-OBJECTS     := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
+OBJECTS     := $(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
+DEPEN_BIN   := $(LIB)/$(LIBFT)/$(LIBFT.A)
 
 #Default Make
-all: directories mlx libft $(TARGET)
+
+all: build $(LIB)/$(MLX)/$(MLX.A) $(LIB)/$(LIBFT)/$(LIB)/$(LIBFT.A) $(TARGETDIR)/$(TARGET) 
 
 #Remake
 re: fclean all
 
 #Make the Directories
-directories:
+build:
 	@mkdir -p $(TARGETDIR)
-	@mkdir -p $(BUILDDIR)
+	@mkdir -p $(OBJDIR)
 
 #Clean only Objects
 clean:
-	@$(RM) -rf $(BUILDDIR)
+	@$(RM) -rf $(OBJDIR)
 	@$(MAKE) -C $(LIB)/$(LIBFT) clean
+	@$(MAKE) -C $(LIB)/$(MLX) clean
 
 #Full Clean, Objects and Binaries
 fclean: clean
-	@$(RM) -rf $(TARGETDIR)
+	@$(RM) -rf $(BUILDIR)
 	@$(MAKE) -C $(LIB)/$(LIBFT) fclean
+	@$(MAKE) -C $(LIB)/$(MLX) clean
 
 #libft
-libft:
+$(LIB)/$(LIBFT)/$(LIB)/$(LIBFT.A):
 	@$(MAKE) -C $(LIB)/$(LIBFT) all
 
 #configure mlx
-mlx:
+$(LIB)/$(MLX)/$(MLX.A):
 	cd $(LIB)/$(MLX) && ./configure
 
 #Link
-$(TARGET): $(OBJECTS)
-	$(CC) $^ $(MLX_L_FLAGS) $(LIB)/$(LIBFT)/$(LIB)/$(LIBFT.A) -o  $(TARGETDIR)/$(TARGET) 
+$(TARGETDIR)/$(TARGET) : $(OBJECTS)
+	$(CC) $(OBJECTS) $(MLX_L_FLAGS) $(LIB)/$(LIBFT)/$(LIB)/$(LIBFT.A) -o  $(TARGETDIR)/$(TARGET) 
 
 #Compile
-$(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT)
+$(OBJDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(MLX_C_FLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) $(MLX_C_FLAGS) -c -o $@ $^
+
 
 #Non-File Targets
 .PHONY: all re clean fclean lib
