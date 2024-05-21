@@ -18,4 +18,5 @@ src/render/pixel.c \
 src/render/slope.c \
 src/render/view.c \
 src/utils/abs.c \
-src/utils/hstoi.c
+src/utils/hstoi.c \
+src/free/free_all_success.c
