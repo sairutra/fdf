@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:09:32 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/21 15:56:01 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/21 16:11:09 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -361,7 +361,7 @@ int		parse_colom(char *path);
 //the number of rows or an error value
 //[Error]
 // -1 
-int		parse_rows(char *path, int columns);
+int		parse_rows(int columns, int fd);
 //[Description]
 //This function checks a specific coordinate in the form
 // of a char *, and returns if it is valid or not. It can accept 

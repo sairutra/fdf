@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 14:56:15 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/20 16:12:50 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/21 16:13:43 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ char	*parse_first_row(int fd, int columns)
 {
 	char	*buf;
 
-	if (fd == -1)
-		return (NULL);
 	buf = get_next_line(fd, 1);
 	if (buf == NULL)
 	{
@@ -68,14 +66,12 @@ char	*parse_first_row(int fd, int columns)
 	return (buf);
 }
 
-int	parse_rows(char *path, int columns)
+int	parse_rows(int columns, int fd)
 {
 	int		count;
-	int		fd;
 	char	*buf;
 
 	count = 1;
-	fd = open(path, O_RDONLY);
 	buf = parse_first_row(fd, columns);
 	if (buf == NULL)
 		return (-1);
@@ -93,6 +89,7 @@ int	parse_rows(char *path, int columns)
 			return (-1);
 		}
 	}
+	get_next_line(0, 2);
 	close(fd);
 	return (count - 1);
 }

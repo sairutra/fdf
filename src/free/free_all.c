@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 15:42:52 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/20 18:04:45 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/21 16:03:16 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	free_all_mlx(t_data *data)
 	int	index;
 
 	index = 0;
+	get_next_line(0, 2);
 	mlx_destroy_image(data->mlx, data->img);
 	mlx_destroy_window(data->mlx, data->win);
 	mlx_destroy_display(data->mlx);
