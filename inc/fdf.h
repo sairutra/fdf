@@ -6,7 +6,7 @@
 /*   By: mynodeus <mynodeus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:09:32 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/21 10:37:52 by mynodeus         ###   ########.fr       */
+/*   Updated: 2024/05/21 10:51:01 by mynodeus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <math.h>
-# include <stdlib.h>
 
 typedef struct s_data
 {
@@ -389,5 +388,14 @@ int		hstoi(char *hex);
 //[Error]
 // No error value
 void	ft_debug(char *format, ...);
+//[Description]
+//This function gives back the absolute value of the parameter.
+// This means the distance between the value and 0
+//[Parameters]
+//int val
+// returns absolute value
+//[Error]
+// No error value
+int		fdf_abs(int val);
 
 #endif

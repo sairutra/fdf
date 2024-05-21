@@ -6,7 +6,7 @@
 /*   By: mynodeus <mynodeus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 10:13:25 by mynodeus          #+#    #+#             */
-/*   Updated: 2024/05/21 10:30:18 by mynodeus         ###   ########.fr       */
+/*   Updated: 2024/05/21 10:47:51 by mynodeus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ float	cfraction(t_point *a, t_point *b)
 
 	dx = b->ox - a->ox;
 	dy = b->oy - a->oy;
-	if (abs(dx) > abs(dy))
+	if (fdf_abs(dx) > fdf_abs(dy))
 		fract = fraction(a->ox, b->ox, a->x);
 	else
 		fract = fraction(a->oy, b->oy, a->y);
