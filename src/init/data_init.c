@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mynodeus <mynodeus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 15:49:54 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/20 17:03:40 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/21 10:24:07 by mynodeus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	data_init(t_data *data)
 	data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	if (data->img == NULL)
 		free_win(data);
-	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel,
+	data->addr = mlx_get_data_addr(data->img, &data->bpp,
 			&data->line_length, &data->endian);
 	if (data->addr == NULL)
 		free_img(data);

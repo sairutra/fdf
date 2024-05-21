@@ -6,22 +6,25 @@
 /*   By: mynodeus <mynodeus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:09:32 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/21 09:58:02 by mynodeus         ###   ########.fr       */
+/*   Updated: 2024/05/21 10:37:52 by mynodeus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
-#include <mlx.h>
-#include "../lib/libft/inc/libft.h"
-#include <unistd.h>
-#include <fcntl.h>
+# include <mlx.h>
+# include "../lib/libft/inc/libft.h"
+# include <unistd.h>
+# include <fcntl.h>
+# include <math.h>
+# include <stdlib.h>
 
-typedef struct	s_data {
+typedef struct s_data
+{
 	void	*img;
 	char	*addr;
-	int		bits_per_pixel;
+	int		bpp;
 	int		line_length;
 	int		endian;
 	int		width;
@@ -35,36 +38,39 @@ typedef struct	s_data {
 	void	*win;
 }				t_data;
 
-typedef struct	s_point {
+typedef struct s_point
+{
 	int	ox;
-	int oy;
+	int	oy;
 	int	x;
-	int y;
-	int z;
-	int color;
+	int	y;
+	int	z;
+	int	color;
 }				t_point;
 
-typedef struct	s_dxy {
+typedef struct s_dxy
+{
 	int	dx;
-	int dy;
+	int	dy;
 }				t_dxy;
 
-typedef struct	s_vars {
+typedef struct s_vars
+{
 	void	*mlx;
 	void	*win;
 }				t_vars;
 
-#ifndef WIDTH
-# define WIDTH 1080
-#endif
+# ifndef WIDTH
+#  define WIDTH 1080
+# endif
 
-#ifndef HEIGHT
-# define HEIGHT 800
-#endif
+# ifndef HEIGHT
+#  define HEIGHT 800
+# endif
 
-#ifndef DEBUG
-# define DEBUG 0
-#endif
+# ifndef DEBUG
+#  define DEBUG 0
+# endif
 
 //colors
 
@@ -83,7 +89,7 @@ typedef struct	s_vars {
 //[Error]
 //if one of the parameter is not 0 <= parameter < 256
 // then function returns -1
-int	trgb(int t, int r, int g, int b);
+int		trgb(int t, int r, int g, int b);
 //[Description]
 //This function extracts the t(ransparency) value from an trgb
 //integer. Make sure to use trgb integer, which can be created with
@@ -94,7 +100,7 @@ int	trgb(int t, int r, int g, int b);
 //Function then returns the value as an int.
 //[Error]
 // No error value
-int	get_t(int trgb);
+int		get_t(int trgb);
 //[Description]
 //This function extracts the r(ed) value from an trgb
 //integer. Make sure to use trgb integer, which can be created with
@@ -105,7 +111,7 @@ int	get_t(int trgb);
 //Function then returns the value as an int.
 //[Error]
 // No error value
-int	get_r(int trgb);
+int		get_r(int trgb);
 //[Description]
 //This function extracts the g(reen) value from an trgb
 //integer. Make sure to use trgb integer, which can be created with
@@ -116,7 +122,7 @@ int	get_r(int trgb);
 //Function then returns the value as an int.
 //[Error]
 // No error value
-int	get_g(int trgb);
+int		get_g(int trgb);
 //[Description]
 //This function extracts the b(lue) value from an trgb
 //integer. Make sure to use trgb integer, which can be created with
@@ -127,7 +133,7 @@ int	get_g(int trgb);
 //Function then returns the value as an int.
 //[Error]
 // No error value
-int	get_b(int trgb);
+int		get_b(int trgb);
 //[Description]
 //This function adds shade to a trgb integer 
 //[Parameters]
@@ -140,7 +146,7 @@ int	get_b(int trgb);
 //[Error]
 //if distance is not between 0 and 1
 // then function returns -1
-int add_shade(double distance, int color);
+int		add_shade(double distance, int color);
 //[Description]
 //This function take a trgb integer and reverse the color 
 //[Parameters]
@@ -150,7 +156,7 @@ int add_shade(double distance, int color);
 // values
 //[Error]
 // No error value
-int rev_color(int trgb);
+int		rev_color(int trgb);
 
 //events
 
@@ -166,7 +172,7 @@ int rev_color(int trgb);
 // values
 //[Error]
 // No error value
-void hooks(t_data *data);
+void	hooks(t_data *data);
 
 //render
 
@@ -185,8 +191,14 @@ void hooks(t_data *data);
 // No error value
 void	pixel_put(t_data *data, int x, int y, int color);
 
+void	isometric(t_point *a, t_point *b);
+void	rotate_x(t_point *a, t_point *b, int alpha);
+void	rotate_y(t_point *a, t_point *b, int tetha);
+void	rotate_z(t_point *a, t_point *b, int gamma);
+void	draw_map(t_data *data);
+void	calculate_slope(t_data *data, t_point *a, t_point *b);
+int		cal_color(t_point *a, t_point *b);
 //init
-
 
 //[Description]
 //This function initializes the data struct, which is used
@@ -198,7 +210,7 @@ void	pixel_put(t_data *data, int x, int y, int color);
 //Function returns nothing
 //[Error]
 // No error value
-void data_init(t_data *data);
+void	data_init(t_data *data);
 //[Description]
 //This function initializes the map coordinates used in the program.
 //[Parameters]
@@ -207,7 +219,7 @@ void data_init(t_data *data);
 //Function returns nothing
 //[Error]
 // No error value
-void map_init_coords(t_data *data);
+void	map_init_coords(t_data *data);
 //[Description]
 //This function initializes the map used in the program.
 //[Parameters]
@@ -216,8 +228,7 @@ void map_init_coords(t_data *data);
 //Function returns nothing
 //[Error]
 // No error value
-void map_init(t_data *data);
-
+void	map_init(t_data *data);
 
 //free
 
@@ -285,7 +296,7 @@ void	free_all_mlx(t_data *data);
 // values
 //[Error]
 // No error value
-void parse(char **argv, t_data* img);
+void	parse(char **argv, t_data *img);
 //[Description]
 //This function parses the first line of the map, to get
 // the count of columns in the map
@@ -296,7 +307,7 @@ void parse(char **argv, t_data* img);
 // values
 //[Error]
 // -1 
-int parse_colom(char *path);
+int		parse_colom(char *path);
 //[Description]
 //This function parses all the rows in the map, 
 // and checks if the all coordinates are valid
@@ -307,7 +318,7 @@ int parse_colom(char *path);
 //the number of rows or an error value
 //[Error]
 // -1 
-int parse_rows(char *path, int columns);
+int		parse_rows(char *path, int columns);
 //[Description]
 //This function checks a specific coordinate in the form
 // of a char *, and returns if it is valid or not. It can accept 
@@ -318,7 +329,7 @@ int parse_rows(char *path, int columns);
 // it returns the error value
 //[Error]
 // 1
-int parse_rows_check_coordinate(char *buf);
+int		parse_rows_check_coordinate(char *buf);
 //[Description]
 //This function checks a specific coordinate's value in the form
 // of a char *, and returns if it is valid or not.
@@ -328,7 +339,7 @@ int parse_rows_check_coordinate(char *buf);
 // it returns the error value
 //[Error]
 // 1
-int parse_rows_check_coordinate_value(char *buf);
+int		parse_rows_check_coordinate_value(char *buf);
 //[Description]
 //This function checks a specific coordinate's color, if it is present, 
 //in the form of a char *, and returns if it is valid or not.
@@ -338,7 +349,7 @@ int parse_rows_check_coordinate_value(char *buf);
 // it returns the error value
 //[Error]
 // 1
-int parse_rows_check_coordinate_color(char *buf, char *bv, char *bc);
+int		parse_rows_check_coordinate_color(char *buf, char *bv, char *bc);
 
 //utils
 
@@ -354,7 +365,7 @@ int parse_rows_check_coordinate_color(char *buf, char *bv, char *bc);
 //[Error]
 // the calculated value in the function minus 1000000 to indicate the 
 // string based is wrong
-int nhti(char *hex, int n);
+int		nhti(char *hex, int n);
 //[Description]
 //This function takes a string and returns the integer value from based
 // based on hexidecimal values. the string should be a represenatiation
@@ -366,7 +377,7 @@ int nhti(char *hex, int n);
 //[Error]
 // the calculated value in the function minus 1000000 to indicate the 
 // string based is wrong
-int	hstoi(char *hex);
+int		hstoi(char *hex);
 //[Description]
 //This function used to debug, if during compilation the debug flag is used
 // parameters are the same as ft_printf
@@ -377,6 +388,6 @@ int	hstoi(char *hex);
 //prints out the paremeters
 //[Error]
 // No error value
-void ft_debug(char* format, ...);
+void	ft_debug(char *format, ...);
 
 #endif
