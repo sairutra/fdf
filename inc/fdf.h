@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:09:32 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/21 16:11:09 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/21 17:53:20 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -327,6 +327,16 @@ void	free_map(t_data *data);
 //[Error]
 // No error value
 void	free_all_mlx(t_data *data);
+//[Description]
+//This function free's all the data related to mlx and the 
+// fdf program and exits with success code
+//[Parameters]
+//t_data *data
+//[Return]
+//Function returns nothing
+//[Error]
+// No error value
+void	free_all_mlx_success(t_data *data);
 
 //parse
 

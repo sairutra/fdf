@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 15:42:52 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/21 16:03:16 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/21 17:55:12 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	free_map(t_data *data)
 		free(data->map_color);
 	}
 	free(data->mlx);
+	perror("Failure memory allocation of map");
 	exit(EXIT_FAILURE);
 }
 
@@ -40,6 +41,7 @@ void	free_img(t_data *data)
 	mlx_destroy_window(data->mlx, data->win);
 	mlx_destroy_display(data->mlx);
 	free(data->mlx);
+	perror("Failure memory allocation of map/image");
 	exit(EXIT_FAILURE);
 }
 
@@ -48,6 +50,7 @@ void	free_win(t_data *data)
 	mlx_destroy_window(data->mlx, data->win);
 	mlx_destroy_display(data->mlx);
 	free(data->mlx);
+	perror("Failure memory allocation of image");
 	exit(EXIT_FAILURE);
 }
 
@@ -55,6 +58,7 @@ void	free_dis(t_data *data)
 {
 	mlx_destroy_display(data->mlx);
 	free(data->mlx);
+	perror("Failure memory allocation of window");
 	exit(EXIT_FAILURE);
 }
 
@@ -75,5 +79,6 @@ void	free_all_mlx(t_data *data)
 		free(data->map_color[index++]);
 	free(data->map_color);
 	free(data->mlx);
+	perror("Failure memory with mapping");
 	exit(EXIT_FAILURE);
 }
