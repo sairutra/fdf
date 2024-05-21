@@ -6,7 +6,7 @@
 /*   By: mynodeus <mynodeus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 10:11:55 by mynodeus          #+#    #+#             */
-/*   Updated: 2024/05/21 10:27:58 by mynodeus         ###   ########.fr       */
+/*   Updated: 2024/05/21 14:01:47 by mynodeus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,19 @@ void	rotate_x(t_point *a, t_point *b, int alpha)
 	b->z = tmp * sin(alpha) + b->z * cos(alpha);
 }
 
+// https://www.youtube.com/watch?v=cgPYLJ-s5II
+// https://www.youtube.com/watch?v=04oQ2jOUjkU
 void	isometric(t_point *a, t_point *b)
 {
-	int	tmp;
+	int	tmpx;
+	int	tmpy;
 
-	tmp = a->x;
-	a->x = (tmp - a->y) * cos(0.523599);
-	a->y = (tmp + a->y) * sin(0.523599) - a->z;
-	tmp = b->x;
-	b->x = (tmp - b->y) * cos(0.523599);
-	b->y = (tmp + b->y) * sin(0.523599) - b->z;
+	tmpx = a->x;
+	tmpy = a->y;
+	a->x = tmpx * 1 + tmpy * -1;
+	a->y = tmpx * 0.5 + tmpy * 0.5 - a->z;
+	tmpx = b->x;
+	tmpy = b->y;
+	b->x = tmpx * 1 + tmpy * -1;
+	b->y = tmpx * 0.5 + tmpy * 0.5 - b->z;
 }

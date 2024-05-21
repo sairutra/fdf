@@ -6,12 +6,13 @@
 /*   By: mynodeus <mynodeus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 10:12:43 by mynodeus          #+#    #+#             */
-/*   Updated: 2024/05/21 10:49:36 by mynodeus         ###   ########.fr       */
+/*   Updated: 2024/05/21 14:00:51 by mynodeus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/fdf.h"
 
+// // https://www.youtube.com/watch?v=RGB-wlatStc 30:00
 void	slope_less_then_one(t_data *data, t_dxy *d, t_point *a, t_point *b)
 {
 	int	p;
@@ -70,6 +71,7 @@ void	slope_bigger_then_one(t_data *data, t_dxy *d, t_point *a, t_point *b)
 	}
 }
 
+// https://www.youtube.com/watch?v=RGB-wlatStc
 void	calculate_slope(t_data *data, t_point *a, t_point *b)
 {
 	t_dxy	d;
