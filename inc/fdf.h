@@ -6,7 +6,7 @@
 /*   By: mynodeus <mynodeus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:09:32 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/21 10:51:01 by mynodeus         ###   ########.fr       */
+/*   Updated: 2024/05/21 11:00:28 by mynodeus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,6 @@ int		get_b(int trgb);
 //distance expects to be between 0 and 1
 //[Return]
 //Function returns tgrb integer with modified shade
-// values
 //[Error]
 //if distance is not between 0 and 1
 // then function returns -1
@@ -152,7 +151,6 @@ int		add_shade(double distance, int color);
 //int trgb
 //[Return]
 //Function returns tgrb integer with reverse color
-// values
 //[Error]
 // No error value
 int		rev_color(int trgb);
@@ -168,7 +166,6 @@ int		rev_color(int trgb);
 // and a window in order for the hooks to be initiliazed.
 //[Return]
 //Function returns nothing
-// values
 //[Error]
 // No error value
 void	hooks(t_data *data);
@@ -185,16 +182,75 @@ void	hooks(t_data *data);
 //int color (trgb)
 //[Return]
 //Function returns nothing
-// values
 //[Error]
 // No error value
 void	pixel_put(t_data *data, int x, int y, int color);
-
+//[Description]
+//This function is used to turn point a and b coordinates
+// into isometric view 
+//[Parameters]
+//t_point *a
+//t_point *b
+//[Return]
+//Function returns nothing
+//[Error]
+// No error value
 void	isometric(t_point *a, t_point *b);
+//[Description]
+//This function is used to turn point a and b y, z coordinates
+// based on alpha value 
+//[Parameters]
+//t_point *a
+//t_point *b
+//int alpha
+//[Return]
+//Function returns nothing
+//[Error]
+// No error value
 void	rotate_x(t_point *a, t_point *b, int alpha);
+//[Description]
+//This function is used to turn point a and b x, z coordinates
+// based on tetha value 
+//[Parameters]
+//t_point *a
+//t_point *b
+//int tetha
+//[Return]
+//Function returns nothing
+//[Error]
+// No error value
 void	rotate_y(t_point *a, t_point *b, int tetha);
+//[Description]
+//This function is used to turn point a and b x, y coordinates
+// based on gamma value 
+//[Parameters]
+//t_point *a
+//t_point *b
+//int gamma
+//[Return]
+//Function returns nothing
+//[Error]
+// No error value
 void	rotate_z(t_point *a, t_point *b, int gamma);
+//[Description]
+//This function is used to draw the map 
+//[Parameters]
+//t_data *data
+//[Return]
+//Function returns nothing
+//[Error]
+// No error value
 void	draw_map(t_data *data);
+//[Description]
+//This function is used to calculate the slope between
+// point a and b, and then draws the line in between 
+//[Parameters]
+//t_point *a
+//t_point *b
+//[Return]
+//Function returns nothing
+//[Error]
+// No error value
 void	calculate_slope(t_data *data, t_point *a, t_point *b);
 int		cal_color(t_point *a, t_point *b);
 //init
@@ -292,7 +348,6 @@ void	free_all_mlx(t_data *data);
 //t_data *data
 //[Return]
 //Function returns nothing
-// values
 //[Error]
 // No error value
 void	parse(char **argv, t_data *img);
@@ -303,7 +358,6 @@ void	parse(char **argv, t_data *img);
 //char *path (to map)
 //[Return]
 //the count of coloms or an error value
-// values
 //[Error]
 // -1 
 int		parse_colom(char *path);
@@ -324,6 +378,7 @@ int		parse_rows(char *path, int columns);
 // coordinates with color or without
 //[Parameters]
 //char *buf
+//[Return]
 //Function returns 0 if coordinate is valid, otherwise
 // it returns the error value
 //[Error]
@@ -334,6 +389,7 @@ int		parse_rows_check_coordinate(char *buf);
 // of a char *, and returns if it is valid or not.
 //[Parameters]
 //char *buf
+//[Return]
 //Function returns 0 if coordinate is valid, otherwise
 // it returns the error value
 //[Error]
@@ -344,6 +400,7 @@ int		parse_rows_check_coordinate_value(char *buf);
 //in the form of a char *, and returns if it is valid or not.
 //[Parameters]
 //char *buf
+//[Return]
 //Function returns 0 if coordinate is valid, otherwise
 // it returns the error value
 //[Error]
@@ -359,6 +416,7 @@ int		parse_rows_check_coordinate_color(char *buf, char *bv, char *bc);
 //[Parameters]
 //char *hex
 //int n
+//[Return]
 //Function returns hexidecimal value in integer represenation, otherwise
 // it returns the error value
 //[Error]
@@ -371,6 +429,7 @@ int		nhti(char *hex, int n);
 // of a hexidecimal value 
 //[Parameters]
 //char *hex
+//[Return]
 //Function returns hexidecimal value in integer represenation, otherwise
 // it returns the error value
 //[Error]
@@ -384,7 +443,8 @@ int		hstoi(char *hex);
 //[Parameters]
 //char *format
 //variables
-//prints out the paremeters
+//[Return]
+//function returns nothing
 //[Error]
 // No error value
 void	ft_debug(char *format, ...);
@@ -393,6 +453,7 @@ void	ft_debug(char *format, ...);
 // This means the distance between the value and 0
 //[Parameters]
 //int val
+//[Return]
 // returns absolute value
 //[Error]
 // No error value

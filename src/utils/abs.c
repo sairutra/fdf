@@ -6,7 +6,7 @@
 /*   By: mynodeus <mynodeus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 10:41:30 by mynodeus          #+#    #+#             */
-/*   Updated: 2024/05/21 10:49:41 by mynodeus         ###   ########.fr       */
+/*   Updated: 2024/05/21 11:00:42 by mynodeus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	fdf_abs(int val)
 {
-	int index;
+	int	index;
 
 	index = 0;
 	if (val == 0)
