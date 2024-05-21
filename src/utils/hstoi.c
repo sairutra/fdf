@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hstoi.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mynodeus <mynodeus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 14:59:08 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/20 18:05:13 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/21 09:11:12 by mynodeus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	nhti(char *hex, int n)
 			val -= 1000000;
 		val = (val << 4) | (byte & 0xF);
 	}
+	ft_debug("hex %s value %d\n", hex, val);
 	return (val);
 }
 

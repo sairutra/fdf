@@ -6,7 +6,7 @@
 /*   By: mynodeus <mynodeus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:09:32 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/20 23:19:30 by mynodeus         ###   ########.fr       */
+/*   Updated: 2024/05/21 09:58:02 by mynodeus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,20 @@ typedef struct	s_data {
 	void	*mlx;
 	void	*win;
 }				t_data;
+
+typedef struct	s_point {
+	int	ox;
+	int oy;
+	int	x;
+	int y;
+	int z;
+	int color;
+}				t_point;
+
+typedef struct	s_dxy {
+	int	dx;
+	int dy;
+}				t_dxy;
 
 typedef struct	s_vars {
 	void	*mlx;

@@ -6,7 +6,7 @@
 /*   By: mynodeus <mynodeus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 11:43:03 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/20 23:47:46 by mynodeus         ###   ########.fr       */
+/*   Updated: 2024/05/21 10:02:17 by mynodeus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,160 +16,214 @@
 #include <math.h>
 
 
+float fraction(float x1, float x2, float x)
+{
+	if (x1 != x2)
+		return ((x - x1) / (x2 - x1));
+	return (0);
+}
 
-void slope_less_then_one(t_data *data, int dx, int dy, int ax, int ay)
+float	cfraction(t_point *a, t_point *b)
+{
+	int		dx;
+	int		dy;
+	float	fract;
+
+	dx = b->ox - a->ox;
+	dy = b->oy - a->oy;
+	if	(abs(dx) > abs(dy))
+		fract = fraction(a->ox, b->ox, a->x);
+	else
+		fract = fraction(a->oy, b->oy, a->y);
+	return fract;
+}
+
+int	cal_color (t_point *a, t_point *b)
+{
+	float	fract;
+	int		r;
+	int		g;
+	int		bl;
+
+	fract = cfraction(a, b);
+	r = get_r(a->color) + (get_r(b->color) - get_r(a->color)) * fract;
+	g = get_g(a->color) + (get_g(b->color) - get_g(a->color)) * fract;
+	bl = get_b(a->color) + (get_b(b->color) - get_b(a->color)) * fract;
+	return (trgb(0, r, g, bl));
+	}
+
+void slope_less_then_one(t_data *data, t_dxy *d, t_point *a, t_point *b)
 {
 	int p;
 	int i;
 
+	(void)b;
 	i = -1;
-	p = 2 * abs(dy) - abs(dx);
+	p = 2 * abs(d->dy) - abs(d->dx);
 	// ft_printf("lp %d\n", p);
-	while (++i < abs(dx))
+	while (++i < abs(d->dx))
 	{
-		if (dx > 0)
-			ax += 1;
+		if (d->dx > 0)
+			a->x += 1;
 		else
-			ax -= 1;
+			a->x -= 1;
 		if (p < 0)
-			p = p + 2 * abs(dy);
+			p = p + 2 * abs(d->dy);
 		else
 		{
-			if (dy > 0)
-				ay += 1;
+			if (d->dy > 0)
+				a->y += 1;
 			else
-				ay -= 1;
-			p = p + 2 * abs(dy) - 2 * abs(dx);
+				a->y -= 1;
+			p = p + 2 * abs(d->dy) - 2 * abs(d->dx);
 		}
 		// ft_printf("lp %d\n", p);
-		pixel_put(data, ax, ay, trgb(0, 255, 255, 255));
+		pixel_put(data, a->x, a->y, cal_color(a, b));
 	}
 }
 
-void slope_bigger_then_one(t_data *data, int dx, int dy, int ax, int ay)
+void slope_bigger_then_one(t_data *data, t_dxy *d, t_point *a, t_point *b)
 {
 	int p;
 	int i;
 
+	(void)b;
 	i = -1;
-	p = 2 * abs(dx) - abs(dy);
+	p = 2 * abs(d->dx) - abs(d->dy);
 	// ft_printf("bp %d\n", p);
-	while (++i < abs(dy))
+	while (++i < abs(d->dy))
 	{
-		if (dy > 0)
-			ay += 1;
+		if (d->dy > 0)
+			a->y += 1;
 		else
-			ay -= 1;
+			a->y -= 1;
 		if (p < 0)
-			p = p + 2 * abs(dx);
+			p = p + 2 * abs(d->dx);
 		else
 		{
-			if (dx > 0)
-				ax += 1;
+			if (d->dx > 0)
+				a->x += 1;
 			else
-				ax -= 1;
-			p = p + 2 * abs(dx) - 2 * abs(dy);
+				a->x -= 1;
+			p = p + 2 * abs(d->dx) - 2 * abs(d->dy);
 		}
 		// ft_printf("bp %d\n", p);
-		pixel_put(data, ax, ay, trgb(0, 255, 255, 255));
+		pixel_put(data, a->x, a->y, cal_color(a, b));
 	}
 }
 
-void calculate_slope(t_data *data, int ax, int ay, int bx, int by)
+void calculate_slope(t_data *data, t_point *a, t_point *b)
 {
-	int dx;
-	int dy;
-
+	t_dxy d;
 	
-	dx = bx - ax;
-	dy = by - ay;
+	d.dx = b->x - a->x;
+	d.dy = b->y - a->y;
+	a->ox = a->x;
+	a->oy = a->y;
+	b->ox = b->x;
+	b->oy = b->y;
 
-	if (abs(dx) > abs(dy))
-		slope_less_then_one(data, dx, dy, ax, ay);
+	if (abs(d.dx) > abs(d.dy))
+		slope_less_then_one(data, &d, a, b);
 	else
-		slope_bigger_then_one(data, dx, dy, ax, ay);
+		slope_bigger_then_one(data, &d, a, b);
 	// ft_printf("dx %d\n", dx);
 	// ft_printf("dy %d\n", dy);
 }
 
 
-void	rotate_z(int *x, int *y, int *z, int gamma)
+void	rotate_z(t_point *a, t_point *b, int gamma)
 {
 	int	tmp;
 
-	tmp = *z;
-	*x = tmp * cos(gamma) - *y * sin(gamma);
-	*y = tmp * sin(gamma) + *y * cos(gamma);
+	tmp = a->z;
+	a->x = tmp * cos(gamma) - a->y * sin(gamma);
+	a->y = tmp * sin(gamma) + a->y * cos(gamma);
+	tmp = b->z;
+	b->x = tmp * cos(gamma) - b->y * sin(gamma);
+	b->y = tmp * sin(gamma) + b->y * cos(gamma);
 }
 
-void	rotate_y(int *x, int *z, int tetha)
+void	rotate_y(t_point *a, t_point *b, int tetha)
 {
 	int	tmp;
 
-	tmp = *x;
-	*x = tmp * cos(tetha) + *z * sin(tetha);
-	*z = *z * cos(tetha) - tmp * sin(tetha);
+	tmp = a->x;
+	a->x = tmp * cos(tetha) + a->z * sin(tetha);
+	a->z = a->z * cos(tetha) - tmp * sin(tetha);
+	tmp = b->x;
+	b->x = tmp * cos(tetha) + b->z * sin(tetha);
+	b->z = b->z * cos(tetha) - tmp * sin(tetha);
 }
 
-void	rotate_x(int *y, int *z, int alpha)
+void	rotate_x(t_point *a, t_point *b, int alpha)
 {
 	int	tmp;
 
-	tmp = *y;
-	*y = tmp * cos(alpha) - *z * sin(alpha);
-	*z = tmp * sin(alpha) + *z * cos(alpha);
+	tmp = a->y;
+	a->y = tmp * cos(alpha) - a->z * sin(alpha);
+	a->z = tmp * sin(alpha) + a->z * cos(alpha);
+	tmp = b->y;
+	b->y = tmp * cos(alpha) - b->z * sin(alpha);
+	b->z = tmp * sin(alpha) + b->z * cos(alpha);
 }
 
 
-void	isometric(int *x, int *y, int z)
+void	isometric(t_point *a, t_point *b)
 {
 	int tmp;
 
 	// ft_printf("z %d\n", z);
-	tmp = *x;
-	*x = (tmp - *y) * cos(0.523599);
-	*y = (tmp + *y) * sin(0.523599) - z;
+	tmp = a->x;
+	a->x = (tmp - a->y) * cos(0.523599);
+	a->y = (tmp + a->y) * sin(0.523599) - a->z;
+	tmp = b->x;
+	b->x = (tmp - b->y) * cos(0.523599);
+	b->y = (tmp + b->y) * sin(0.523599) - b->z;
 }
 
-void draw_line(t_data *data, int ax, int ay, int bx, int by)
+
+
+void draw_line(t_data *data, t_point *a, t_point *b)
 {
 	int zoom = (WIDTH / data->columns / (2 * (WIDTH / HEIGHT)));
-	// int zoom = (WIDTH / data->rows) / 3;
-	// int zoom = 1;
-	int az;
-	int bz;
 
-	az = data->map[ax][ay];
-	bz = data->map[bx][by];
-	ax *= zoom;
-	bx *= zoom;
-	ay *= zoom;
-	by *= zoom;
-	az *= zoom;
-	bz *= zoom;
-	// rotate_x(&ay, &az, 0);
-	// rotate_y(&ax, &az, 0);
-	// rotate_z(&ax, &ay, &az, 0);
-	// rotate_x(&by, &bz, 0);
-	// rotate_y(&bx, &bz, 0);
-	// rotate_z(&bx, &by, &bz, 0);
-	isometric(&ax, &ay, az);
-	isometric(&bx, &by, bz);
-	// printf("by %d\n", by);
-	ax += WIDTH / 2;
-	bx += WIDTH / 2;
-	ay += HEIGHT / 3;
-	by += HEIGHT / 3;
-	// printf("by %d\n", by);
+	a->x *= zoom;
+	b->x *= zoom;
+	a->y *= zoom;
+	b->y *= zoom;
+	a->z *= zoom;
+	b->z *= zoom;
+	// rotate_x(a, b, 0);
+	// rotate_y(a, b, 0);
+	// rotate_z(a, b, 0);
+	isometric(a, b);
+	// printf("b->y %d\n", b->y);
+	a->x += WIDTH / 2;
+	b->x += WIDTH / 2;
+	a->y += HEIGHT / 3;
+	b->y += HEIGHT / 3;
+	// printf("b->y %d\n", b->y);
 
-	// printf("zoom width height ax ay bx by %d %d %d %d %d %d %d\n", zoom, data->width, data->height ,ax, ay, bx, by);
-	calculate_slope(data, ax, ay, bx, by);
+	// printf("zoom width height a->x a->y b->x b->y %d %d %d %d %d %d %d\n", zoom, data->width, data->height ,a->x, a->y, b->x, b->y);
+	calculate_slope(data, a, b);
+}
+
+t_point *ip(t_point *point, t_data *data, int x, int y)
+{
+	point->x = x;
+	point->y = y;
+	point->z = data->map[x][y];
+	point->color = data->map_color[x][y];
+	return (point);
 }
 
 void draw_map(t_data *data)
 {
-	int	x;
-	int	y;
+	int		x;
+	int		y; 
+	t_point	a;
+	t_point b;
 
 	x = 0;
 	while (x < data->rows)
@@ -180,9 +234,9 @@ void draw_map(t_data *data)
 		{
 			// ft_printf("y %d\n", y);
 			if (x < data->rows - 1)
-				draw_line(data, x, y, x + 1, y);
+				draw_line(data, ip(&a, data, x, y), ip(&b, data, x + 1, y));
 			if (y < data->columns - 1)
-				draw_line(data, x, y, x, y + 1);
+				draw_line(data, ip(&a, data, x, y), ip(&b, data, x, y + 1));
 			y++;
 		}
 		x++;

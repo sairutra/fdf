@@ -17,14 +17,18 @@ void	map_init_coords_values_vc_clr(t_data *data, char **b, int r, int c)
 	int	clr;
 	int	len;
 
-	clr = trgb(255, 255, 255, 255);
+	clr = trgb(0, 255, 255, 255);
 	len = ft_strlen(b[1]);
-	if (len == 4)
-		clr = trgb(0, nhti(&b[1][2], 1), 0, 0);
-	if (len == 6)
-		clr = trgb(0, nhti(&b[1][2], 1), nhti(&b[1][4], 1), 0);
-	if (len == 8)
-		clr = trgb(0, nhti(&b[1][2], 1), nhti(&b[1][4], 1), nhti(&b[1][6], 1));
+	ft_debug("&b[1][2] %s\n", &b[1][2]);
+	ft_debug("&b[1][4] %s\n", &b[1][4]);
+	ft_debug("&b[1][6] %s\n", &b[1][6]);
+	(void)len;
+	if (len == 4 || len == 5)
+		clr = trgb(0, nhti(&b[1][2], 2), 255, 255);
+	if (len == 6 || len == 7)
+		clr = trgb(0, nhti(&b[1][2], 2), nhti(&b[1][4], 2), 255);
+	if (len == 8 || len == 9)
+		clr = trgb(0, nhti(&b[1][2], 2), nhti(&b[1][4], 2), nhti(&b[1][6], 2));
 	data->map[r][c] = ft_atoi(b[0]);
 	data->map_color[r][c] = clr;
 }
