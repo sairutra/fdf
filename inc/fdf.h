@@ -6,7 +6,7 @@
 /*   By: spenning <spenning@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:09:32 by spenning          #+#    #+#             */
-/*   Updated: 2024/05/21 15:30:56 by spenning         ###   ########.fr       */
+/*   Updated: 2024/05/21 15:56:01 by spenning         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,6 @@ typedef struct s_dxy
 	int	dx;
 	int	dy;
 }				t_dxy;
-
-typedef struct s_vars
-{
-	void	*mlx;
-	void	*win;
-}				t_vars;
 
 # ifndef WIDTH
 #  define WIDTH 1080
